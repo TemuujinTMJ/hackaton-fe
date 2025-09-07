@@ -62,7 +62,7 @@ export default function Modal({
       {/* Modal */}
       <div className="flex min-h-full items-center justify-center p-4 ">
         <div
-          className={`relative w-full max-w-2xl rounded-xl bg-[#101522] shadow-lg transition-all border border-zinc-500`}
+          className={`relative w-full max-w-xl rounded-xl bg-[#101522] shadow-lg transition-all border border-zinc-500`}
         >
           {/* Header */}
           <div className="flex items-center justify-between border-b border-zinc-500 px-6 py-4">

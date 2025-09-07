@@ -254,6 +254,99 @@ export default function Tasks({ tasks }: TasksProps) {
               <p className="mt-1 text-sm text-red-500">{errors.title}</p>
             )}
           </div>
+
+          <div className="flex gap-4">
+            <div className="flex-1">
+              <label className="block text-sm font-medium text-gray-300">
+                Type
+              </label>
+              <select
+                value={formData.type}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    type: e.target.value as TaskFormData["type"],
+                  }))
+                }
+                className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white"
+                required
+              >
+                <option value="normal">Normal</option>
+                <option value="urgent">Urgent</option>
+                <option value="onboarding">Onboarding</option>
+              </select>
+            </div>
+            <div className="w-[100px]">
+              <label className="block text-sm font-medium text-gray-300">
+                Priority
+              </label>
+              <input
+                type="number"
+                value={formData.priority}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    priority: parseInt(e.target.value) || 1,
+                  }))
+                }
+                className={`mt-1 block w-full px-3 py-2 bg-gray-700 border rounded-md text-white ${
+                  errors.priority ? "border-red-500" : "border-gray-600"
+                }`}
+                min={1}
+                max={5}
+                required
+              />
+              {errors.priority && (
+                <p className="mt-1 text-sm text-red-500">{errors.priority}</p>
+              )}
+            </div>
+          </div>
+          <div className="flex gap-4">
+            <div className="flex-1">
+              <label className="block text-sm font-medium text-gray-300">
+                Status
+              </label>
+              <select
+                value={formData.isActive}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    isActive: e.target.value,
+                  }))
+                }
+                className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white"
+                required
+              >
+                <option value="true">Идэвхтэй</option>
+                <option value="false">Дууссан</option>
+              </select>
+            </div>
+            <div className="w-[100px]">
+              <label className="block text-sm font-medium text-gray-300">
+                Working Days
+              </label>
+              <input
+                type="number"
+                value={formData.workingDays}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    workingDays: e.target.value,
+                  }))
+                }
+                className={`mt-1 block w-full px-3 py-2 bg-gray-700 border rounded-md text-white ${
+                  errors.workingDays ? "border-red-500" : "border-gray-600"
+                }`}
+                min={1}
+                required
+              />
+              {errors.workingDays && (
+                <p className="mt-1 text-sm text-red-500">
+                  {errors.workingDays}
+                </p>
+              )}
+            </div>
+          </div>
           <div>
             <label className="block text-sm font-medium text-gray-300">
               Description
@@ -275,92 +368,6 @@ export default function Tasks({ tasks }: TasksProps) {
             {errors.description && (
               <p className="mt-1 text-sm text-red-500">{errors.description}</p>
             )}
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-300">
-              Priority
-            </label>
-            <input
-              type="number"
-              value={formData.priority}
-              onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  priority: parseInt(e.target.value) || 1,
-                }))
-              }
-              className={`mt-1 block w-full px-3 py-2 bg-gray-700 border rounded-md text-white ${
-                errors.priority ? "border-red-500" : "border-gray-600"
-              }`}
-              min={1}
-              max={5}
-              required
-            />
-            {errors.priority && (
-              <p className="mt-1 text-sm text-red-500">{errors.priority}</p>
-            )}
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-300">
-              Type
-            </label>
-            <select
-              value={formData.type}
-              onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  type: e.target.value as TaskFormData["type"],
-                }))
-              }
-              className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white"
-              required
-            >
-              <option value="normal">Normal</option>
-              <option value="urgent">Urgent</option>
-              <option value="onboarding">Onboarding</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-300">
-              Working Days
-            </label>
-            <input
-              type="number"
-              value={formData.workingDays}
-              onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  workingDays: e.target.value,
-                }))
-              }
-              className={`mt-1 block w-full px-3 py-2 bg-gray-700 border rounded-md text-white ${
-                errors.workingDays ? "border-red-500" : "border-gray-600"
-              }`}
-              min={1}
-              required
-            />
-            {errors.workingDays && (
-              <p className="mt-1 text-sm text-red-500">{errors.workingDays}</p>
-            )}
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-300">
-              Status
-            </label>
-            <select
-              value={formData.isActive}
-              onChange={(e) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  isActive: e.target.value,
-                }))
-              }
-              className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white"
-              required
-            >
-              <option value="true">Идэвхтэй</option>
-              <option value="false">Дууссан</option>
-            </select>
           </div>
         </form>
       </Modal>
