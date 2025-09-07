@@ -1,5 +1,6 @@
-import React from "react";
+import React, { Suspense } from "react";
 import Header from "@/app/_components/header";
+import Files from "./files";
 
 export default async function Page() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/file`, {
@@ -12,7 +13,9 @@ export default async function Page() {
   return (
     <div>
       <Header title="File Management" />
-      {JSON.stringify(data)}
+      <Suspense fallback={<div>Loading...</div>}>
+        <Files files={data.files} />
+      </Suspense>
     </div>
   );
 }

@@ -1,5 +1,6 @@
-import React from "react";
+import React, { Suspense } from "react";
 import Employee from "./employee";
+import Header from "@/app/_components/header";
 
 export default async function Page() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users/list`, {
@@ -9,5 +10,12 @@ export default async function Page() {
     },
   });
   const data = await res.json();
-  return <Employee data={data} />;
+  return (
+    <div>
+      <Header title="Employee List" />
+      <Suspense fallback={<div>Loading...</div>}>
+        <Employee data={data} />
+      </Suspense>
+    </div>
+  );
 }

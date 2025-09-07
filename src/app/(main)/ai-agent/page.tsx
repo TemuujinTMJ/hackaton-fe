@@ -1,19 +1,12 @@
 import React from "react";
 import Header from "@/app/_components/header";
+import Chat from "./chat";
 
-export default async function Page() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/chat`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ content: "hi" }),
-  });
-  const data = await res.json();
+export default function Page() {
   return (
-    <div>
-      <Header title="File Management" />
-      {JSON.stringify(data)}
+    <div className="h-full">
+      <Header title="AI Assistant" />
+      <Chat />
     </div>
   );
 }

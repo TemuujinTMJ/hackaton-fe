@@ -3,6 +3,18 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --gradient-start: #492e6d;
+  --gradient-end: #101522;
+}
+
+.gradient-background {
+  background: var(--gradient-start);
+  background: linear-gradient(
+    45deg,
+    var(--gradient-start) 0%,
+    var(--gradient-end) 50%,
+    var(--gradient-end) 100%
+  );
 }
 
 @theme inline {
