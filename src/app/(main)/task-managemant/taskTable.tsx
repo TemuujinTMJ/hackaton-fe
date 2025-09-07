@@ -1,3 +1,4 @@
+import { Edit, Pen, Trash } from "lucide-react";
 import React from "react";
 interface TaskProps {
   _id: string;
@@ -11,7 +12,13 @@ interface TaskProps {
   createdAt: string;
   updatedAt: string;
 }
-export default function TaskTable({ tasks }: { tasks: TaskProps[] }) {
+interface TaskTableProps {
+  tasks: TaskProps[];
+  onDelete: (taskId: string) => void;
+  onEdit?: (task: TaskProps) => void;
+}
+
+export default function TaskTable({ tasks, onDelete, onEdit }: TaskTableProps) {
   const getPriorityColor = (priority: number) => {
     switch (priority) {
       case 1:
@@ -77,7 +84,7 @@ export default function TaskTable({ tasks }: { tasks: TaskProps[] }) {
         <tbody className="divide-y divide-zinc-500">
           {tasks.map((task) => (
             <tr key={task._id}>
-              <td className="px-6 py-4 font-medium text-white w-[300px]">
+              <td className="px-6 py-4 font-medium text-white w-[500px]">
                 <div>
                   <div className="font-semibold">{task.title}</div>
                   <div className="text-sm text-gray-400 mt-1 line-clamp-2">
@@ -85,8 +92,8 @@ export default function TaskTable({ tasks }: { tasks: TaskProps[] }) {
                   </div>
                 </div>
               </td>
-              <td className="px-6 py-4 text-white">
-                <span className="px-2 py-1 rounded-full text-xs bg-[#2d2d2d]">
+              <td className="px-6 py-4 text-white w-[150px]">
+                <span className="px-2 py-1 rounded-full text-xs bg-[#2d2d2d] ">
                   {task.type}
                 </span>
               </td>
@@ -99,38 +106,38 @@ export default function TaskTable({ tasks }: { tasks: TaskProps[] }) {
                   {getPriorityText(task.priority)}
                 </span>
               </td>
-              <td className="px-6 py-4 text-white">{task.workingDays}</td>
+              <td className="px-6 py-4 text-white w-[150px] text-center">
+                {task.workingDays}
+              </td>
               <td className="px-6 py-4 text-white">
                 {formatDate(task.createdAt)}
               </td>
               <td className="px-6 py-4">
-                <span
+                <button
                   className={`px-2 py-1 rounded-full text-xs ${
                     task.isActive === "true"
-                      ? "bg-green-50 text-green-600"
-                      : "bg-gray-50 text-gray-600"
+                      ? "bg-green-50 text-green-600 hover:bg-green-100"
+                      : "bg-gray-50 text-gray-600 hover:bg-gray-100"
                   }`}
                 >
                   {task.isActive === "true" ? "Идэвхтэй" : "Дууссан"}
-                </span>
+                </button>
               </td>
               <td className="px-6 py-4">
-                <div className="flex gap-2">
+                <div className="flex gap-1">
+                  {onEdit && (
+                    <button
+                      className="p-2 text-[#DDDDDD] hover:bg-[#2d2d2d] rounded-lg transition-colors"
+                      onClick={() => onEdit(task)}
+                    >
+                      <Pen />
+                    </button>
+                  )}
                   <button
-                    className="p-2 text-blue-500 hover:bg-[#2d2d2d] rounded-lg transition-colors"
-                    onClick={() => {
-                      /* Edit function */
-                    }}
+                    className="p-2 text-[#DDDDDD] hover:bg-[#2d2d2d] rounded-lg transition-colors"
+                    onClick={() => onDelete(task._id)}
                   >
-                    Засах
-                  </button>
-                  <button
-                    className="p-2 text-red-500 hover:bg-[#2d2d2d] rounded-lg transition-colors"
-                    onClick={() => {
-                      /* Delete function */
-                    }}
-                  >
-                    Устгах
+                    <Trash />
                   </button>
                 </div>
               </td>
