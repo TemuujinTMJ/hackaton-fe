@@ -5,7 +5,7 @@ import Chat from "./chat";
 export default function Page() {
   return (
     <div className="h-full">
-      <Header title="AI Assistant" />
+      <Header title="AI туслах" />
       <Chat />
     </div>
   );

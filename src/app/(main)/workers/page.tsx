@@ -12,7 +12,7 @@ export default async function Page() {
   const data = await res.json();
   return (
     <div>
-      <Header title="Employee List" />
+      <Header title="Нийт ажилчид" />
       <Suspense fallback={<div>Loading...</div>}>
         <Employee data={data} />
       </Suspense>

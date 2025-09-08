@@ -397,7 +397,7 @@ export default function Tasks({ tasks }: TasksProps) {
       </Modal>
 
       <Header
-        title="Task management"
+        title="Таск менежмент"
         extra={
           <Button props={{ onClick: () => setOpen(true) }}>Add Task</Button>
         }

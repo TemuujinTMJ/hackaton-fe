@@ -18,22 +18,22 @@ export default function Employee({ data }: { data: Employee[] }) {
       <table className="min-w-full shadow-sm rounded-lg">
         <thead>
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider">
               Name
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider">
               Email
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider">
               Department
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider">
               Position
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider">
               Role
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider">
               Start Date
             </th>
           </tr>
@@ -51,28 +51,28 @@ export default function Employee({ data }: { data: Employee[] }) {
                   <div
                     className={`h-8 w-8 rounded-full  mr-3 flex items-center justify-center`}
                   >
-                    <span className="text-gray-500 text-sm">
+                    <span className=" text-sm">
                       {employee.first_name[0]}
                       {employee.last_name[0]}
                     </span>
                   </div>
                   <div>
-                    <div className="text-sm font-medium text-gray-900">
+                    <div className="text-sm font-medium text-white">
                       {employee.first_name} {employee.last_name}
                     </div>
-                    <div className="text-sm text-gray-500">
+                    <div className="text-sm ">
                       {employee.gender || "Not specified"}
                     </div>
                   </div>
                 </div>
               </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              <td className="px-6 py-4 whitespace-nowrap text-sm ">
                 {employee.email}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              <td className="px-6 py-4 whitespace-nowrap text-sm ">
                 {employee.department || "N/A"}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              <td className="px-6 py-4 whitespace-nowrap text-sm ">
                 {employee.position || "N/A"}
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
@@ -89,7 +89,7 @@ export default function Employee({ data }: { data: Employee[] }) {
                   {employee.user_role}
                 </span>
               </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              <td className="px-6 py-4 whitespace-nowrap text-sm ">
                 {employee.startedJobAt
                   ? new Date(employee.startedJobAt).toLocaleDateString()
                   : "N/A"}
