@@ -8,8 +8,9 @@ import {
   Sparkles,
   Users,
 } from "lucide-react";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-
+import Button from "./button";
 export function AppSidebar() {
   const pathname = usePathname();
   const router = useRouter();
@@ -23,37 +24,63 @@ export function AppSidebar() {
     { link: "/workers", label: "Нийт ажилчид", icon: <Users /> },
   ];
   return (
-    <div className="bg-[#0C101C] text-white w-[300px] min-h-screen p-4 flex flex-col gap-4 justify-between">
-      <div>{(userInfo as { name?: string })?.name}</div>
-      <div>
-        {labels.map((item) => (
-          <div
-            key={item.link}
-            onClick={() => router.push(item.link)}
-            className={`flex items-center gap-2 p-2 rounded-[8px] transition-colors duration-300 cursor-pointer
+    <div className="bg-[#0C101C] text-white w-[300px] min-h-screen p-4 flex flex-col gap-32">
+      <div className="flex items-center gap-4 mb-10">
+        <Image
+          src="/login/blob.png"
+          alt="User Avatar"
+          width={60}
+          height={60}
+          className="rounded-full"
+        />
+        <div>
+          <div>{(userInfo as { name?: string })?.name}</div>
+          <div className="text-sm text-gray-400">
+            {(userInfo as { email?: string })?.email}
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-col h-full justify-between">
+        <div className="grid gap-6">
+          {labels.map((item) => (
+            <div
+              key={item.link}
+              onClick={() => router.push(item.link)}
+              className={`flex items-center gap-2 p-2 rounded-[8px] transition-colors duration-300 cursor-pointer
             ${
               pathname === item.link
                 ? "bg-[#1B202F] text-[#7CC8F5]"
                 : "bg-transparent"
             }`}
-          >
-            <div
-              className={`${
-                pathname === item.link ? "text-[#7CC8F5]" : "text-white"
-              }`}
             >
-              {item.icon}
+              <div
+                className={`${
+                  pathname === item.link ? "text-[#7CC8F5]" : "text-white"
+                }`}
+              >
+                {item.icon}
+              </div>
+              <span>{item.label}</span>
             </div>
-            <span>{item.label}</span>
-          </div>
-        ))}
+          ))}
+        </div>
+        <div className="w-full">
+          <Button
+            props={{
+              onClick: () => {
+                logout();
+              },
+              style: {
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+              },
+            }}
+          >
+            Log out
+          </Button>
+        </div>
       </div>
-      <button
-        className="mt-auto bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg"
-        onClick={() => logout()}
-      >
-        Log out
-      </button>
     </div>
   );
 }
