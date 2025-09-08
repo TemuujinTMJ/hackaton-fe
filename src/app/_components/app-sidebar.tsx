@@ -1,6 +1,6 @@
 "use client";
 
-// import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/contexts/authProvider";
 import {
   ChartColumnBig,
   FileUp,
@@ -13,7 +13,7 @@ import { usePathname, useRouter } from "next/navigation";
 export function AppSidebar() {
   const pathname = usePathname();
   const router = useRouter();
-  // const { logout } = useAuth();
+  const { userInfo, logout } = useAuth();
 
   const labels = [
     { link: "/", label: "Хянах самбар", icon: <ChartColumnBig /> },
@@ -22,9 +22,9 @@ export function AppSidebar() {
     { link: "/task-managemant", label: "Task нэмэх", icon: <ListPlus /> },
     { link: "/workers", label: "Нийт ажилчид", icon: <Users /> },
   ];
-
   return (
-    <div className="bg-[#0C101C] text-white w-[300px] min-h-screen p-4 flex flex-col gap-4">
+    <div className="bg-[#0C101C] text-white w-[300px] min-h-screen p-4 flex flex-col gap-4 justify-between">
+      <div>{(userInfo as { name?: string })?.name}</div>
       <div>
         {labels.map((item) => (
           <div
@@ -48,12 +48,12 @@ export function AppSidebar() {
           </div>
         ))}
       </div>
-      {/* <button
+      <button
         className="mt-auto bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg"
         onClick={() => logout()}
       >
         Log out
-      </button> */}
+      </button>
     </div>
   );
 }

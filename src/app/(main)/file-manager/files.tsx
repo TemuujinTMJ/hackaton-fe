@@ -83,12 +83,10 @@ export default function Files({
   const deleteFile = async (id: string) => {
     try {
       setDeleting(id);
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/info?id=${id}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/info`, {
+        method: "DELETE",
+        body: JSON.stringify({ id: id }),
+      });
 
       if (!response.ok) {
         throw new Error("Failed to delete file");
@@ -283,7 +281,7 @@ export default function Files({
               return (
                 <div
                   key={file.id}
-                  className={`group p-4 ${fileType.color} border rounded-2xl transition-all hover:border-blue-500 bg-[#FFFFFF0D] min-w-[300px]`}
+                  className={`group p-4 ${fileType.color} border rounded-2xl transition-all bg-[#FFFFFF0D] min-w-[300px]`}
                 >
                   <div className="flex items-center justify-center bg-[#FFFFFF1A] h-40 rounded-3xl">
                     <Image
@@ -304,7 +302,7 @@ export default function Files({
                       </p>
                     </div>
                     <button
-                      className="px-3 py-1 bg-[#FFFFFF1A] text-white rounded hover:bg-[#3d3d3d] h-min"
+                      className="px-3 py-1 text-white rounded hover:bg-[#3d3d3d] h-min"
                       onClick={() => deleteFile(file.id)}
                       disabled={deleting === file.id}
                     >

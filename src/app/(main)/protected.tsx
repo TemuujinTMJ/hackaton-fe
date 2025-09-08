@@ -1,25 +1,23 @@
 "use client";
-import { useAuth } from "@/hooks/useAuth";
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect } from "react";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
 export default function Protected({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
-  const pathname = usePathname();
-  useEffect(() => {
-    if (!isLoading && !isAuthenticated && !pathname.startsWith("/login")) {
-      router.push("/login");
-    }
-  }, [isAuthenticated, isLoading, router, pathname]);
+  const [loading, setLoading] = useState(true);
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-custom-blue">
-        <div className="animate-pulse text-white text-lg">Loading...</div>
-      </div>
-    );
+  useEffect(() => {
+    const userInfo = localStorage.getItem("user");
+    if (userInfo) {
+      setLoading(false);
+    } else {
+      router.replace("/login");
+    }
+  }, [router]);
+
+  if (loading) {
+    return <div>Loading...</div>;
   }
-  return <div>{children}</div>;
+
+  return <>{children}</>;
 }

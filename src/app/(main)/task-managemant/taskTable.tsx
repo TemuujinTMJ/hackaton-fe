@@ -1,5 +1,4 @@
-import { Edit, Pen, Trash } from "lucide-react";
-import React from "react";
+import { Pen, Trash } from "lucide-react";
 interface TaskProps {
   _id: string;
   title: string;

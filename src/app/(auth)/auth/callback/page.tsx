@@ -16,6 +16,7 @@ export default function Callback() {
     if (code && !userInfo) {
       const body: { email?: string; code?: string; isWeb: boolean } = {
         isWeb: true,
+        code: code,
       };
       if (storedUser) {
         const parsedUser = JSON.parse(storedUser);
@@ -47,7 +48,7 @@ export default function Callback() {
           console.error("Auth error:", err);
         });
     }
-  }, [code, router, setToken, setUserInfo]);
+  }, [code, router, setToken, setUserInfo, userInfo]);
 
   if (!code) return <p>No code provided</p>;
 
