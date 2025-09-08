@@ -62,19 +62,42 @@ function formatFileSize(bytes: number) {
 }
 
 interface FilesComponentProps {
-  files: FilesProps[];
   onUploadSuccess?: () => void;
 }
 
 export default function Files({
-  files: initialFiles,
   onUploadSuccess,
 }: FilesComponentProps) {
   const [uploading, setUploading] = React.useState(false);
   const [deleting, setDeleting] = React.useState<string | null>(null);
-  const [files, setFiles] = React.useState<FilesProps[]>(initialFiles || []);
+  const [files, setFiles] = React.useState<FilesProps[]>([]);
   const [selectedType, setSelectedType] = React.useState<string>("all");
   const [searchQuery, setSearchQuery] = React.useState<string>("");
+  const [loading, setLoading] = React.useState(true);
+
+  const fetchFiles = React.useCallback(async () => {
+    try {
+      setLoading(true);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/file`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!res.ok) throw new Error('Failed to fetch files');
+      const data = await res.json();
+      setFiles(data.files || []);
+    } catch (error) {
+      console.error('Error fetching files:', error);
+      toast.error('Failed to load files');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  React.useEffect(() => {
+    fetchFiles();
+  }, [fetchFiles]);
 
   React.useEffect(() => {
     onUploadSuccess?.();
@@ -92,7 +115,7 @@ export default function Files({
         throw new Error("Failed to delete file");
       }
 
-      setFiles((prevFiles) => prevFiles.filter((file) => file.id !== id));
+      await fetchFiles();
       toast.success("Файл амжилттай устгагдлаа");
       onUploadSuccess?.();
     } catch (error) {
@@ -123,15 +146,8 @@ export default function Files({
         throw new Error(jsonResponse.message || "Upload failed");
       }
 
-      const newFile: FilesProps = {
-        id: jsonResponse.id || Date.now().toString(),
-        metadata: {
-          name: file.name,
-          size: file.size,
-        },
-      };
-      setFiles((prevFiles) => [...prevFiles, newFile]);
 
+      await fetchFiles();
       toast.success("Файл амжилттай орууллаа.");
       return jsonResponse;
     } catch (error) {
@@ -246,9 +262,13 @@ export default function Files({
           }
         }).length === 0 ? (
           <div className="col-span-full text-center py-12 text-gray-500">
-            {files.length === 0
-              ? "Одоогоор файл байхгүй байна"
-              : "Хайлтад тохирох файл олдсонгүй"}
+            {loading ? (
+              "Файлуудыг ачааллаж байна..."
+            ) : files.length === 0 ? (
+              "Одоогоор файл байхгүй байна"
+            ) : (
+              "Хайлтад тохирох файл олдсонгүй"
+            )}
           </div>
         ) : (
           files
