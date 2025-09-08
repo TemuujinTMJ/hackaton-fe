@@ -50,6 +50,7 @@ export default function Login() {
               alt="microsoft"
               width={16}
               height={16}
+              priority
             />
             <p className="text-[13px]">Microsoft office 365</p>
           </button>
