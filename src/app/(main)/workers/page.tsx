@@ -6,6 +6,7 @@ export default async function Page() {
     cache: "no-store",
   });
   const data = await res.json();
+  console.log(data);
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Employee data={data} />

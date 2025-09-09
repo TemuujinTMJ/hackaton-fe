@@ -129,14 +129,14 @@ export default function TaskTable({ tasks, onDelete, onEdit }: TaskTableProps) {
                       className="p-2 text-[#DDDDDD] hover:bg-[#2d2d2d] rounded-lg transition-colors"
                       onClick={() => onEdit(task)}
                     >
-                      <Pen />
+                      <Pen className="h-4 w-4" />
                     </button>
                   )}
                   <button
                     className="p-2 text-[#DDDDDD] hover:bg-[#2d2d2d] rounded-lg transition-colors"
                     onClick={() => onDelete(task._id)}
                   >
-                    <Trash />
+                    <Trash className="h-4 w-4" />
                   </button>
                 </div>
               </td>

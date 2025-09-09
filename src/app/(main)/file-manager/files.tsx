@@ -90,7 +90,10 @@ export default function Files({
       setDeleting(id);
       const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/file`, {
         method: "DELETE",
-        body: JSON.stringify({ id: id }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id }),
       });
 
       if (!response.ok) {
@@ -179,7 +182,7 @@ export default function Files({
   });
 
   return (
-    <div className="p-4 min-h-screen  text-white">
+    <div className="p-4 overflow-y-auto overflow-hidden text-white">
       <div className="relative mb-8 flex justify-between gap-4">
         <input
           type="text"

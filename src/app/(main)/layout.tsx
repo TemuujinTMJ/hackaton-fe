@@ -10,7 +10,7 @@ export default function MainLayout({
     <Protected>
       <div className="flex w-full">
         <AppSidebar />
-        <main className="flex-1 w-full h-screen overflow-hidden ">
+        <main className="flex-1 w-full h-screen overflow-hidden">
           {children}
         </main>
       </div>
