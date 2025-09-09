@@ -1,4 +1,9 @@
 "use client";
+
+import Button from "@/app/_components/button";
+import Header from "@/app/_components/header";
+import { Pen, Trash } from "lucide-react";
+
 interface Employee {
   _id: string;
   first_name: string;
@@ -14,70 +19,84 @@ interface Employee {
 
 export default function Employee({ data }: { data: Employee[] }) {
   return (
-    <div className="mt-4 px-6 overflow-y-auto">
-      <table className="min-w-full shadow-sm rounded-lg">
-        <thead>
-          <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider">
-              Name
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider">
-              Email
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider">
-              Department
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider">
-              Position
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider">
-              Role
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider">
-              Start Date
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((employee, idx) => (
-            <tr
-              key={employee._id}
-              className={`${
-                idx % 2 === 0 && "bg-[#1C1D2F]"
-              } border-b border-transparent hover:border-gray-500`}
-            >
-              <td className="px-6 py-4 whitespace-nowrap">
-                <div className="flex items-center">
-                  <div
-                    className={`h-8 w-8 rounded-full  mr-3 flex items-center justify-center`}
-                  >
-                    <span className=" text-sm">
-                      {employee.first_name[0]}
-                      {employee.last_name[0]}
-                    </span>
-                  </div>
-                  <div>
-                    <div className="text-sm font-medium text-white">
-                      {employee.first_name} {employee.last_name}
+    <div>
+      <Header
+        title="Нийт ажилчид"
+        extra={
+          <Button
+            props={{
+              onClick: () => {},
+            }}
+          >
+            Add Employee
+          </Button>
+        }
+      />
+
+      <div className="mt-4 px-6 overflow-y-auto">
+        <table className="min-w-full shadow-sm rounded-lg">
+          <thead>
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider">
+                Name
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider">
+                Email
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider">
+                Department
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider">
+                Position
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider">
+                Role
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider">
+                Start Date
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.map((employee, idx) => (
+              <tr
+                key={employee._id}
+                className={`${
+                  idx % 2 === 0 && "bg-[#1C1D2F]"
+                } border-b border-transparent hover:border-gray-500`}
+              >
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="flex items-center">
+                    <div
+                      className={`h-8 w-8 rounded-full  mr-3 flex items-center justify-center`}
+                    >
+                      <span className=" text-sm">
+                        {employee.first_name[0]}
+                        {employee.last_name[0]}
+                      </span>
                     </div>
-                    <div className="text-sm ">
-                      {employee.gender || "Not specified"}
+                    <div>
+                      <div className="text-sm font-medium text-white">
+                        {employee.first_name} {employee.last_name}
+                      </div>
+                      <div className="text-sm ">
+                        {employee.gender || "Not specified"}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm ">
-                {employee.email}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm ">
-                {employee.department || "N/A"}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm ">
-                {employee.position || "N/A"}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <span
-                  className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm ">
+                  {employee.email}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm ">
+                  {employee.department || "N/A"}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm ">
+                  {employee.position || "N/A"}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <span
+                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
                   ${
                     employee.user_role === "hr"
                       ? "bg-purple-100 text-purple-800"
@@ -85,19 +104,36 @@ export default function Employee({ data }: { data: Employee[] }) {
                       ? "bg-green-100 text-green-800"
                       : "bg-gray-100 text-gray-800"
                   }`}
-                >
-                  {employee.user_role}
-                </span>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm ">
-                {employee.startedJobAt
-                  ? new Date(employee.startedJobAt).toLocaleDateString()
-                  : "N/A"}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                  >
+                    {employee.user_role}
+                  </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm ">
+                  {employee.startedJobAt
+                    ? new Date(employee.startedJobAt).toLocaleDateString()
+                    : "N/A"}
+                </td>
+                <td className="px-6 py-4">
+                  <div className="flex gap-1">
+                    <button
+                      className="p-2 text-[#DDDDDD] hover:bg-[#2d2d2d] rounded-lg transition-colors"
+                      // onClick={() => onEdit(task)}
+                    >
+                      <Pen />
+                    </button>
+                    <button
+                      className="p-2 text-[#DDDDDD] hover:bg-[#2d2d2d] rounded-lg transition-colors"
+                      // onClick={() => onDelete(task._id)}
+                    >
+                      <Trash />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

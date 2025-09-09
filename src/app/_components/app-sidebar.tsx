@@ -3,6 +3,7 @@
 import { useAuth } from "@/contexts/authProvider";
 import {
   ChartColumnBig,
+  FileQuestion,
   FileUp,
   ListPlus,
   Sparkles,
@@ -18,10 +19,11 @@ export function AppSidebar() {
 
   const labels = [
     { link: "/", label: "Хянах самбар", icon: <ChartColumnBig /> },
-    { link: "/file-manager", label: "Файл нэмэх", icon: <FileUp /> },
+    { link: "/file-manager", label: "Файл менежмент", icon: <FileUp /> },
     { link: "/ai-agent", label: "AI туслах", icon: <Sparkles /> },
-    { link: "/task-managemant", label: "Task нэмэх", icon: <ListPlus /> },
+    { link: "/task-managemant", label: "Таск менежмент", icon: <ListPlus /> },
     { link: "/workers", label: "Нийт ажилчид", icon: <Users /> },
+    { link: "/feedback", label: "Санал хүсэлт", icon: <FileQuestion /> },
   ];
   return (
     <div className="bg-[#0C101C] text-white w-[300px] min-h-screen p-4 flex flex-col gap-32">

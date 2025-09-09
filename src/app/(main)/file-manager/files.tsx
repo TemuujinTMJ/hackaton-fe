@@ -88,7 +88,7 @@ export default function Files({
   const deleteFile = async (id: string) => {
     try {
       setDeleting(id);
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/info`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/file`, {
         method: "DELETE",
         body: JSON.stringify({ id: id }),
       });
