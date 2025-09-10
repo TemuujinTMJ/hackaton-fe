@@ -15,3 +15,40 @@ export interface IUser {
   user_role_id: string;
   status?: string;
 }
+export interface DashboardData {
+  workerStats: {
+    active: number;
+    inactive: number;
+    remote: number;
+    onvacation: number;
+    totalWorker: number;
+  };
+  questionsToResolve: Array<{
+    _id: string;
+    question_text: string;
+    answer_text: string;
+    isSolved: boolean;
+    origin: string;
+    createdAt: string;
+  }>;
+  questionStats: {
+    total: number;
+    topic: Array<{
+      fileName: string;
+      amount: number;
+      _id: string;
+    }>;
+  };
+  happinessStats: Array<{
+    date: string;
+    emotion: Array<{
+      emotion: string;
+      emotionIndex: number;
+      totalWorkers: number;
+    }>;
+  }>;
+  taskTypeCompletions: Array<{
+    _id: string;
+    count: number;
+  }>;
+}

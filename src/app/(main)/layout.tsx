@@ -8,11 +8,9 @@ export default function MainLayout({
 }) {
   return (
     <Protected>
-      <div className="flex w-full">
+      <div className="flex w-full h-screen">
         <AppSidebar />
-        <main className="flex-1 w-full h-screen overflow-hidden">
-          {children}
-        </main>
+        <main className="flex-1 w-full  overflow-auto">{children}</main>
       </div>
     </Protected>
   );
