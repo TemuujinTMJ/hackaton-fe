@@ -14,7 +14,6 @@ interface HappinessIndexProps {
 export default function HappinessIndex({
   happinessStats,
 }: HappinessIndexProps) {
-  console.log(happinessStats);
   // Emotion mapping based on your emotionIndex enum
   const emotionMapping = {
     1: { name: "Баяр хөөртэй", image: "/happiness/joy.png", color: "#FAE92D" },

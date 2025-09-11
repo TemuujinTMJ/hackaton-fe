@@ -63,7 +63,7 @@ export default function StatsCards({
         totalWorkers += emotion.totalWorkers;
       });
     });
-    return totalWorkers > 0 ? (totalScore / totalWorkers).toFixed(1) : 0;
+    return totalWorkers > 0 ? (totalScore / totalWorkers + 1).toFixed(1) : 0;
   };
   console.log(happinessStats);
   const completedTasks =
