@@ -2,7 +2,7 @@
 
 import Button from "@/app/_components/button";
 import Modal from "@/app/_components/modal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface QAItem {
   _id: string;
@@ -31,6 +31,15 @@ export default function QATable({ qaData, onDataUpdate }: QATableProps) {
   const [localQaData, setLocalQaData] = useState<QAItem[]>(qaData);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc" | "none">("none");
   const itemsPerPage = 6;
+
+  // Apply default sorting (latest first) when component mounts or qaData changes
+  useEffect(() => {
+    const sortedData = [...qaData].sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+    setLocalQaData(sortedData);
+  }, [qaData]);
 
   // Handle status sorting
   const handleStatusSort = (selectedValue: string) => {
@@ -159,9 +168,9 @@ export default function QATable({ qaData, onDataUpdate }: QATableProps) {
               onChange={(e) => handleStatusSort(e.target.value)}
               className="px-3 py-1 bg-gray-800 border border-gray-700 rounded-lg text-gray-300 text-sm hover:border-gray-600 focus:border-blue-500 focus:outline-none transition-colors"
             >
-              <option value="none">Анхны</option>
-              <option value="asc">Төлөв: Хүлээгдэж буй эхэнд</option>
-              <option value="desc">Төлөв: Шийдэгдсэн эхэнд</option>
+              <option value="none">Шинэ нь эхэнд</option>
+              <option value="asc">Хүлээгдэж буй эхэнд</option>
+              <option value="desc">Шийдэгдсэн эхэнд</option>
             </select>
           </div>
         </div>
@@ -199,7 +208,7 @@ export default function QATable({ qaData, onDataUpdate }: QATableProps) {
                 className="border-b border-gray-800/50 hover:bg-gray-800/30 transition-colors"
               >
                 <td className="py-4 px-4">
-                  <div className="flex items-center">
+                  <div className="flex items-center text-nowrap">
                     <div
                       className={`w-2 h-2 rounded-full mr-2 ${
                         item.isSolved ? "bg-green-500" : "bg-orange-500"
@@ -269,8 +278,8 @@ export default function QATable({ qaData, onDataUpdate }: QATableProps) {
       {totalPages > 1 && (
         <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-800 w-full">
           <div className="text-gray-400 text-sm">
-            {startIndex + 1}-с {Math.min(endIndex, localQaData.length)}{" "}
-            хүртэл {localQaData.length} үр дүнгээс
+            {startIndex + 1}-с {Math.min(endIndex, localQaData.length)} хүртэл{" "}
+            {localQaData.length} үр дүнгээс
           </div>
           <div className="flex items-center space-x-2">
             <button

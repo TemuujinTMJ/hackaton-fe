@@ -114,7 +114,14 @@ export default function Chat() {
                       </span>
                     )}
                   </div>
-                  <div className="text-zinc-300">{message.content}</div>
+                  {message.received ? (
+                    <div
+                      className="text-zinc-300"
+                      dangerouslySetInnerHTML={{ __html: message.content }}
+                    />
+                  ) : (
+                    <div className="text-zinc-300">{message.content}</div>
+                  )}
                 </div>
                 <Image
                   src="/login/blob.png"
@@ -149,7 +156,7 @@ export default function Chat() {
         </div>
       ) : (
         <div className="text-center">
-          <h1 className="text-6xl">
+          <h1 className="text-6xl text-white">
             Таны хувийн туслах{" "}
             <span className="bg-gradient-to-r from-[#83BCE0] to-[#CB98E5] text-transparent bg-clip-text font-bold">
               HR
@@ -173,7 +180,7 @@ export default function Chat() {
             }}
             onKeyDown={handleKeyDown}
             placeholder="Танд ямар тусламж хэрэгтэй вэ?"
-            className="w-full p-4 pr-24 rounded-xl border border-zinc-500 bg-[#1B202F] focus:outline-none focus:border-blue-500 resize-none max-h-80 min-h-28"
+            className="w-full p-4 pr-24 rounded-xl border text-white border-zinc-500 bg-[#1B202F] focus:outline-none focus:border-blue-500 resize-none max-h-80 min-h-28"
             rows={4}
           />
           <button

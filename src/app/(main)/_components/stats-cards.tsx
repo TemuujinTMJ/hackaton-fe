@@ -79,9 +79,7 @@ export default function StatsCards({
           <div className="text-green-400 text-sm font-medium">+12%</div>
         </div>
         <div>
-          <p className="text-gray-400 text-sm font-medium mb-1">
-            Нийт ажилчид
-          </p>
+          <p className="text-gray-400 text-sm font-medium mb-1">Нийт ажилчид</p>
           <p className="text-white text-3xl font-bold">
             {workerStats?.totalWorker || 0}
           </p>

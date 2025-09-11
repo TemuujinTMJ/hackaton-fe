@@ -221,7 +221,7 @@ export default function Employee({ data: initialData }: { data: Employee[] }) {
             }}
           >
             {loading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
-            Add Employee
+            Ажилтан нэмэх
           </Button>
         }
       />
@@ -253,9 +253,11 @@ export default function Employee({ data: initialData }: { data: Employee[] }) {
           setEditingEmployee(null);
           setErrors({});
         }}
-        title={editingEmployee ? "Edit Employee" : "Add New Employee"}
+        title={
+          editingEmployee ? "Ажилтны мэдээлэл засах" : "Шинэ ажилтан нэмэх"
+        }
         primaryButton={{
-          label: loading ? "Saving..." : "Save",
+          label: loading ? "Хадгалж байна..." : "Хадгалах",
           onClick: () => {
             // Get form data and submit
             const form = document.getElementById(
@@ -287,7 +289,7 @@ export default function Employee({ data: initialData }: { data: Employee[] }) {
           loading: loading,
         }}
         secondaryButton={{
-          label: "Cancel",
+          label: "Цуцлах",
           onClick: () => {
             setShowForm(false);
             setEditingEmployee(null);
@@ -301,7 +303,7 @@ export default function Employee({ data: initialData }: { data: Employee[] }) {
         >
           {/* First Name / Last Name */}
           <div>
-            <label className="block text-sm font-medium mb-1">First Name</label>
+            <label className="block text-sm font-medium mb-1">Нэр</label>
             <input
               type="text"
               name="first_name"
@@ -316,7 +318,7 @@ export default function Employee({ data: initialData }: { data: Employee[] }) {
             )}
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">Last Name</label>
+            <label className="block text-sm font-medium mb-1">Овог</label>
             <input
               type="text"
               name="last_name"
@@ -332,7 +334,9 @@ export default function Employee({ data: initialData }: { data: Employee[] }) {
           </div>
           {/* Email / Phone Number */}
           <div>
-            <label className="block text-sm font-medium mb-1">Email</label>
+            <label className="block text-sm font-medium mb-1">
+              Цахим шуудан
+            </label>
             <input
               type="email"
               name="email"
@@ -347,7 +351,7 @@ export default function Employee({ data: initialData }: { data: Employee[] }) {
           </div>
           <div>
             <label className="block text-sm font-medium mb-1">
-              Phone Number
+              Утасны дугаар
             </label>
             <input
               type="text"
@@ -364,7 +368,7 @@ export default function Employee({ data: initialData }: { data: Employee[] }) {
           </div>
           {/* Address (full width) */}
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium mb-1">Address</label>
+            <label className="block text-sm font-medium mb-1">Хаяг</label>
             <input
               type="text"
               name="address"
@@ -378,7 +382,7 @@ export default function Employee({ data: initialData }: { data: Employee[] }) {
           </div>
           {/* Department / Position */}
           <div>
-            <label className="block text-sm font-medium mb-1">Department</label>
+            <label className="block text-sm font-medium mb-1">Алба</label>
             <input
               type="text"
               name="department"
@@ -391,7 +395,9 @@ export default function Employee({ data: initialData }: { data: Employee[] }) {
             )}
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">Position</label>
+            <label className="block text-sm font-medium mb-1">
+              Албан тушаал
+            </label>
             <input
               type="text"
               name="position"
@@ -405,28 +411,27 @@ export default function Employee({ data: initialData }: { data: Employee[] }) {
           </div>
           {/* Role / Gender */}
           <div>
-            <label className="block text-sm font-medium mb-1">Role</label>
+            <label className="block text-sm font-medium mb-1">Эрх мэдэл</label>
             <select
               name="user_role"
               defaultValue={editingEmployee?.user_role || "worker"}
               className="w-full px-3 py-2 border border-zinc-500 rounded-lg"
               required
             >
-              <option value="worker">worker</option>
-              <option value="hr">hr</option>
+              <option value="worker">ажилтан</option>
+              <option value="hr">хүний нөөц</option>
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">Gender</label>
+            <label className="block text-sm font-medium mb-1">Хүйс</label>
             <select
               name="gender"
-              defaultValue={editingEmployee?.gender || "other"}
+              defaultValue={editingEmployee?.gender || "male"}
               className="w-full px-3 py-2 border border-zinc-500 rounded-lg"
               required
             >
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
+              <option value="male">Эрэгтэй</option>
+              <option value="female">Эмэгтэй</option>
             </select>
           </div>
         </form>
@@ -437,28 +442,28 @@ export default function Employee({ data: initialData }: { data: Employee[] }) {
           <thead>
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                Name
+                Нэр
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                Email
+                Цахим шуудан
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                Department
+                Алба
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                Position
+                Албан тушаал
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                Role
+                Эрх мэдэл
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                Phone
+                Утасны дугаар
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                Address
+                Хаяг
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                Actions
+                Үйлдэл
               </th>
             </tr>
           </thead>

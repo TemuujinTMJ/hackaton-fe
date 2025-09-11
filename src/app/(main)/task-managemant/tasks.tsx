@@ -214,9 +214,9 @@ export default function Tasks({ tasks }: TasksProps) {
     }
   };
 
-  const urgentTasks = data.filter((task) => task.type === "urgent");
-  const normalTasks = data.filter((task) => task.type === "normal");
-  const onboardingTasks = data.filter((task) => task.type === "onboarding");
+  const urgentTasks = data?.filter((task) => task.type === "urgent");
+  const normalTasks = data?.filter((task) => task.type === "normal");
+  const onboardingTasks = data?.filter((task) => task.type === "onboarding");
   return (
     <div>
       {/* Create/Edit Task Modal */}
@@ -323,7 +323,7 @@ export default function Tasks({ tasks }: TasksProps) {
             </div>
             <div className="w-[100px]">
               <label className="block text-sm font-medium text-gray-300">
-                Ажлын өдөр өдөр
+                Ажлын өдөр
               </label>
               <input
                 type="number"
@@ -404,7 +404,7 @@ export default function Tasks({ tasks }: TasksProps) {
       />
       <div className="h-[calc(100vh-8rem)] overflow-y-auto px-10">
         <div className="space-y-8">
-          {urgentTasks.length > 0 && (
+          {urgentTasks?.length > 0 && (
             <div>
               <h2 className="text-xl font-semibold mb-4 text-white">
                 Яаралтай даалгаврууд
@@ -416,7 +416,7 @@ export default function Tasks({ tasks }: TasksProps) {
               />
             </div>
           )}
-          {normalTasks.length > 0 && (
+          {normalTasks?.length > 0 && (
             <div>
               <h2 className="text-xl font-semibold mb-4 text-white">
                 Энгийн даалгаврууд
@@ -428,10 +428,10 @@ export default function Tasks({ tasks }: TasksProps) {
               />
             </div>
           )}
-          {onboardingTasks.length > 0 && (
+          {onboardingTasks?.length > 0 && (
             <div>
               <h2 className="text-xl font-semibold mb-4 text-white">
-                Танилцуулга даалгаврууд
+                Шинэ ажилтны даалгаврууд
               </h2>
               <TaskTable
                 tasks={onboardingTasks}

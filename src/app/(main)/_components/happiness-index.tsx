@@ -6,42 +6,47 @@ interface HappinessIndexProps {
   happinessStats: Array<{
     date: string;
     emotion: Array<{
-      emotion: string;
       emotionIndex: number;
       totalWorkers: number;
     }>;
   }>;
 }
-
 export default function HappinessIndex({
   happinessStats,
 }: HappinessIndexProps) {
+  console.log(happinessStats);
   // Emotion mapping based on your emotionIndex enum
   const emotionMapping = {
-    1: { name: "Баяр хөөр", image: "/happiness/joy.png", color: "#22C55E" },
-    2: { name: "Гунигтай", image: "/happiness/sadness.png", color: "#EF4444" },
+    1: { name: "Баяр хөөртэй", image: "/happiness/joy.png", color: "#FAE92D" },
+    2: { name: "Гунигтай", image: "/happiness/sadness.png", color: "#1A57A0" },
     3: {
-      name: "Жигшээх",
+      name: "Дургуйцэлтэй",
       image: "/happiness/disgust.png",
-      color: "#DC2626",
+      color: "#1EC461",
     },
-    4: { name: "Уйтгар", image: "/happiness/ennui.png", color: "#6B7280" },
-    5: { name: "Уур хилэн", image: "/happiness/anger.png", color: "#DC2626" },
-    6: { name: "Түгшүүр", image: "/happiness/anxiety.png", color: "#F59E0B" },
+    4: { name: "Уйтгартай", image: "/happiness/ennui.png", color: "#6F70D6" },
+    5: { name: "Ууртай", image: "/happiness/anger.png", color: "#F92E33" },
+    6: {
+      name: "Түгшүүртэй",
+      image: "/happiness/anxiety.png",
+      color: "#FB8337",
+    },
     7: {
-      name: "Ичгүүр",
+      name: "Ичиж байна",
       image: "/happiness/embarrassment.png",
-      color: "#F97316",
+      color: "#FB8337",
     },
-    8: { name: "Атаархал", image: "/happiness/envy.png", color: "#10B981" },
-    9: { name: "Айдас", image: "/happiness/fear.png", color: "#7C3AED" },
+    8: { name: "Атаархалтай", image: "/happiness/envy.png", color: "#31BCBB" },
+    9: { name: "Айдастай", image: "/happiness/fear.png", color: "#B676C0" },
   };
 
   return (
     <div className="bg-[#101522] rounded-2xl p-6 border border-gray-800">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-lg font-semibold text-white mb-1">Сэтгэл хөдлөл</h2>
+          <h2 className="text-lg font-semibold text-white mb-1">
+            Сэтгэл хөдлөл
+          </h2>
         </div>
         <span className="text-gray-400 text-sm">Сүүлийн 7 хоног</span>
       </div>
@@ -50,14 +55,11 @@ export default function HappinessIndex({
       <div className="h-80 w-full">
         <svg viewBox="0 0 800 380" className="w-full h-full">
           {(() => {
-            // Get latest happiness data for emotion distribution
-            const latestHappiness = happinessStats?.slice(-1)[0];
-
-            if (!latestHappiness?.emotion.length) {
+            if (!happinessStats?.length) {
               return (
                 <text
-                  x="200"
-                  y="115"
+                  x="400"
+                  y="190"
                   fill="#9CA3AF"
                   fontSize="14"
                   textAnchor="middle"
@@ -67,20 +69,28 @@ export default function HappinessIndex({
               );
             }
 
-            // Create emotion data from the latest happiness data using emotionIndex
+            // Aggregate emotion data across all days
+            const emotionTotals: { [key: number]: number } = {};
+
+            // Sum up totalWorkers for each emotionIndex across all days
+            happinessStats.forEach((dayData) => {
+              dayData.emotion.forEach((emotionData) => {
+                const index = emotionData.emotionIndex;
+                emotionTotals[index] =
+                  (emotionTotals[index] || 0) + emotionData.totalWorkers;
+              });
+            });
+
+            // Create emotion data for the chart
             const emotionCounts = Object.entries(emotionMapping).map(
               ([index, emotionInfo]) => {
                 const emotionIndex = parseInt(index);
-                const matchingEmotion = latestHappiness.emotion.find(
-                  (e) => e.emotionIndex === emotionIndex
-                );
-
                 return {
                   index: emotionIndex,
                   name: emotionInfo.name,
                   image: emotionInfo.image,
                   color: emotionInfo.color,
-                  count: matchingEmotion?.totalWorkers || 0,
+                  count: emotionTotals[emotionIndex] || 0,
                 };
               }
             );
