@@ -80,7 +80,7 @@ export default function Chat() {
   };
   return (
     <div
-      className={`flex flex-col gap-10 h-[calc(100vh-8rem)] ${
+      className={`flex flex-col gap-10 h-[calc(100vh-8rem)] no-scollbar ${
         data?.length ?? " h-[calc(100vh-8rem)] justify-center"
       } px-32`}
     >

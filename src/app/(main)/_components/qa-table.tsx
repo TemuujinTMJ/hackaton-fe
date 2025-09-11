@@ -30,7 +30,7 @@ export default function QATable({ qaData, onDataUpdate }: QATableProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [localQaData, setLocalQaData] = useState<QAItem[]>(qaData);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc" | "none">("none");
-  const itemsPerPage = 6;
+  const itemsPerPage = 7;
 
   // Apply default sorting (latest first) when component mounts or qaData changes
   useEffect(() => {
@@ -148,7 +148,7 @@ export default function QATable({ qaData, onDataUpdate }: QATableProps) {
   };
 
   return (
-    <div className="bg-[#101522] rounded-2xl p-6 border border-gray-800 items-start flex flex-col">
+    <div className="bg-[#101522] rounded-2xl p-6 border border-gray-800 w-full">
       <div className="flex items-center justify-between w-full mb-6">
         <div>
           <h2 className="text-xl font-semibold text-white mb-2">
@@ -177,26 +177,26 @@ export default function QATable({ qaData, onDataUpdate }: QATableProps) {
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto self-start mb-auto">
-        <table className="w-full">
+      <div className="overflow-x-auto w-full">
+        <table className="w-full min-w-full table-fixed">
           <thead>
             <tr className="border-b border-gray-800">
-              <th className="text-left py-3 px-4 text-gray-400 text-sm font-medium">
+              <th className="text-left py-3 px-4 text-gray-400 text-sm font-medium w-32">
                 Төлөв
               </th>
-              <th className="text-left py-3 px-4 text-gray-400 text-sm font-medium">
+              <th className="text-left py-3 px-4 text-gray-400 text-sm font-medium w-80">
                 Асуулт
               </th>
-              <th className="text-left py-3 px-4 text-gray-400 text-sm font-medium">
+              <th className="text-left py-3 px-4 text-gray-400 text-sm font-medium w-80">
                 Хариулт
               </th>
-              <th className="text-left py-3 px-4 text-gray-400 text-sm font-medium">
+              <th className="text-center py-3 px-4 text-gray-400 text-sm font-medium w-24">
                 Эх үүсвэр
               </th>
-              <th className="text-left py-3 px-4 text-gray-400 text-sm font-medium">
+              <th className="text-center py-3 px-4 text-gray-400 text-sm font-medium w-20">
                 Оноо
               </th>
-              <th className="text-left py-3 px-4 text-gray-400 text-sm font-medium">
+              <th className="text-center py-3 px-4 text-gray-400 text-sm font-medium w-40">
                 Үүсгэсэн
               </th>
             </tr>
@@ -232,7 +232,7 @@ export default function QATable({ qaData, onDataUpdate }: QATableProps) {
                     </p>
                   </div>
                 </td>
-                <td className="py-4 px-4">
+                <td className="py-4 px-4 w-56">
                   <div className="text-gray-300 text-sm">
                     {item.answer_text ? (
                       <p title={item.answer_text}>
@@ -247,7 +247,7 @@ export default function QATable({ qaData, onDataUpdate }: QATableProps) {
                     )}
                   </div>
                 </td>
-                <td className="py-4 px-4">
+                <td className="py-4 px-4 w-[100px] text-center">
                   <span
                     className={`text-xs px-2 py-1 rounded-full font-medium ${
                       item.origin === "ai"
@@ -258,12 +258,12 @@ export default function QATable({ qaData, onDataUpdate }: QATableProps) {
                     {item.origin.toUpperCase()}
                   </span>
                 </td>
-                <td className="py-4 px-4">
+                <td className="py-4 px-4 w-[100px] text-center">
                   <div className="text-gray-300 text-sm">
                     {item.score > 0 ? item.score.toFixed(3) : "-"}
                   </div>
                 </td>
-                <td className="py-4 px-4">
+                <td className="py-4 px-4 text-center">
                   <div className="text-gray-400 text-sm">
                     {formatDate(item.createdAt)}
                   </div>

@@ -9,7 +9,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="min-h-screen gradient-background">
+      <body className="min-h-screen gradient-background text-white">
         <AuthProvider>{children}</AuthProvider>
         <Toaster
           position="top-center"
