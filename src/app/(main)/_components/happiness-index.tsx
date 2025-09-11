@@ -42,7 +42,7 @@ export default function HappinessIndex({
 
   return (
     <div className="bg-[#101522] rounded-2xl p-6 border border-gray-800">
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between ">
         <div>
           <h2 className="text-lg font-semibold text-white mb-1">
             Сэтгэл хөдлөл
@@ -52,7 +52,7 @@ export default function HappinessIndex({
       </div>
 
       {/* Vertical Emotions Chart */}
-      <div className="h-80 w-full">
+      <div className="h-76 w-full">
         <svg viewBox="0 0 800 380" className="w-full h-full">
           {(() => {
             if (!happinessStats?.length) {

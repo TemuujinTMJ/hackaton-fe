@@ -148,7 +148,7 @@ export default function QATable({ qaData, onDataUpdate }: QATableProps) {
   };
 
   return (
-    <div className="bg-[#101522] rounded-2xl p-6 border border-gray-800 lg:col-span-2 items-start flex flex-col">
+    <div className="bg-[#101522] rounded-2xl p-6 border border-gray-800 items-start flex flex-col">
       <div className="flex items-center justify-between w-full mb-6">
         <div>
           <h2 className="text-xl font-semibold text-white mb-2">
@@ -226,14 +226,14 @@ export default function QATable({ qaData, onDataUpdate }: QATableProps) {
                   </div>
                 </td>
                 <td className="py-4 px-4">
-                  <div className="text-white text-sm max-w-xs">
+                  <div className="text-white text-sm">
                     <p title={item.question_text}>
                       {truncateText(item.question_text, 60)}
                     </p>
                   </div>
                 </td>
                 <td className="py-4 px-4">
-                  <div className="text-gray-300 text-sm max-w-xs">
+                  <div className="text-gray-300 text-sm">
                     {item.answer_text ? (
                       <p title={item.answer_text}>
                         {truncateText(item.answer_text, 80)}

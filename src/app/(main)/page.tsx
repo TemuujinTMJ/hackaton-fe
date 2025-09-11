@@ -5,6 +5,7 @@ import {
   HappinessIndex,
   WorkerStatus,
   QATable,
+  PopularTopics,
   SmallLoader,
 } from "./_components";
 import { Suspense } from "react";
@@ -35,13 +36,16 @@ export default async function Home() {
             taskTypeCompletions={data.taskTypeCompletions}
           />
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <QATable qaData={qaData.questions} />
+            <div className="col-span-2">
+              <PopularTopics topicsData={data.questionStats.topic} />
+            </div>
             <div className="space-y-6">
               <HappinessIndex happinessStats={data.happinessStats} />
-
               <WorkerStatus workerStats={data.workerStats} />
             </div>
           </div>
+
+          <QATable qaData={qaData.questions} />
         </div>
       </Suspense>
     </div>

@@ -156,12 +156,12 @@ export default function Chat() {
         </div>
       ) : (
         <div className="text-center">
-          <h1 className="text-6xl text-white">
+          <div className="text-6xl text-white font-bold">
             Таны хувийн туслах{" "}
             <span className="bg-gradient-to-r from-[#83BCE0] to-[#CB98E5] text-transparent bg-clip-text font-bold">
               HR
             </span>
-          </h1>
+          </div>
         </div>
       )}
 
