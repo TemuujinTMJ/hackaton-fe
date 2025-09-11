@@ -80,7 +80,7 @@ export default function StatsCards({
         </div>
         <div>
           <p className="text-gray-400 text-sm font-medium mb-1">
-            Total Employees
+            Нийт ажилчид
           </p>
           <p className="text-white text-3xl font-bold">
             {workerStats?.totalWorker || 0}
@@ -110,7 +110,7 @@ export default function StatsCards({
         </div>
         <div>
           <p className="text-gray-400 text-sm font-medium mb-1">
-            Avg Happiness
+            Дундаж баяр баясгалан
           </p>
           <p className="text-white text-3xl font-bold">
             {calculateAvgHappiness()}/10
@@ -140,7 +140,7 @@ export default function StatsCards({
         </div>
         <div>
           <p className="text-gray-400 text-sm font-medium mb-1">
-            Total Questions
+            Нийт асуултууд
           </p>
           <p className="text-white text-3xl font-bold">
             {questionStats?.total || 0}
@@ -170,7 +170,7 @@ export default function StatsCards({
         </div>
         <div>
           <p className="text-gray-400 text-sm font-medium mb-1">
-            Completed Tasks
+            Гүйцэтгэсэн даалгаврууд
           </p>
           <p className="text-white text-3xl font-bold">{completedTasks}</p>
         </div>

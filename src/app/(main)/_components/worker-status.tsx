@@ -14,7 +14,7 @@ export default function WorkerStatus({ workerStats }: WorkerStatusProps) {
   return (
     <div className="bg-[#101522] rounded-2xl p-6 border border-gray-800">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-lg font-semibold text-white">Worker Status</h2>
+        <h2 className="text-lg font-semibold text-white">Ажилчдын төлөв</h2>
       </div>
 
       <div className="flex flex-col items-center">
@@ -155,7 +155,7 @@ export default function WorkerStatus({ workerStats }: WorkerStatusProps) {
                     textAnchor="middle"
                     className="fill-gray-400 text-sm"
                   >
-                    Total Workers
+                    Нийт ажилчид
                   </text>
                 </>
               );
@@ -171,7 +171,7 @@ export default function WorkerStatus({ workerStats }: WorkerStatusProps) {
                 className="w-3 h-3 rounded"
                 style={{ backgroundColor: "#CB3CFF" }}
               ></div>
-              <span className="text-gray-400 text-sm">Active</span>
+              <span className="text-gray-400 text-sm">Идэвхтэй</span>
             </div>
             <span className="text-white text-sm font-medium">
               {workerStats?.active || 0}
@@ -183,7 +183,7 @@ export default function WorkerStatus({ workerStats }: WorkerStatusProps) {
                 className="w-3 h-3 rounded"
                 style={{ backgroundColor: "#57C3FF" }}
               ></div>
-              <span className="text-gray-400 text-sm">Remote</span>
+              <span className="text-gray-400 text-sm">Алсын зайн</span>
             </div>
             <span className="text-white text-sm font-medium">
               {workerStats?.remote || 0}
@@ -195,7 +195,7 @@ export default function WorkerStatus({ workerStats }: WorkerStatusProps) {
                 className="w-3 h-3 rounded"
                 style={{ backgroundColor: "#9A91FB" }}
               ></div>
-              <span className="text-gray-400 text-sm">On Vacation</span>
+              <span className="text-gray-400 text-sm">Амралтанд</span>
             </div>
             <span className="text-white text-sm font-medium">
               {workerStats?.onvacation || 0}
@@ -207,7 +207,7 @@ export default function WorkerStatus({ workerStats }: WorkerStatusProps) {
                 className="w-3 h-3 rounded"
                 style={{ backgroundColor: "#D1DBF9" }}
               ></div>
-              <span className="text-gray-400 text-sm">Inactive</span>
+              <span className="text-gray-400 text-sm">Идэвхгүй</span>
             </div>
             <span className="text-white text-sm font-medium">
               {workerStats?.inactive || 0}

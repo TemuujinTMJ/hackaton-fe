@@ -223,21 +223,21 @@ export default function Tasks({ tasks }: TasksProps) {
       <Modal
         isOpen={open}
         onClose={handleCloseModal}
-        title={editingTaskId ? "Task засах" : "Task үүсгэх"}
+        title={editingTaskId ? "Таск засах" : "Таск үүсгэх"}
         primaryButton={{
-          label: editingTaskId ? "Update" : "Save",
+          label: editingTaskId ? "Шинэчлэх" : "Хадгалах",
           onClick: handleSubmit,
           loading: isSubmitting,
         }}
         secondaryButton={{
-          label: "Cancel",
+          label: "Цуцлах",
           onClick: handleCloseModal,
         }}
       >
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-300">
-              Title
+              Гарчиг
             </label>
             <input
               type="text"
@@ -258,7 +258,7 @@ export default function Tasks({ tasks }: TasksProps) {
           <div className="flex gap-4">
             <div className="flex-1">
               <label className="block text-sm font-medium text-gray-300">
-                Type
+                Төрөл
               </label>
               <select
                 value={formData.type}
@@ -271,14 +271,14 @@ export default function Tasks({ tasks }: TasksProps) {
                 className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white"
                 required
               >
-                <option value="normal">Normal</option>
-                <option value="urgent">Urgent</option>
-                <option value="onboarding">Onboarding</option>
+                <option value="normal">Энгийн</option>
+                <option value="urgent">Яаралтай</option>
+                <option value="onboarding">Танилцуулга</option>
               </select>
             </div>
             <div className="w-[100px]">
               <label className="block text-sm font-medium text-gray-300">
-                Priority
+                Зэрэглэл
               </label>
               <input
                 type="number"
@@ -304,7 +304,7 @@ export default function Tasks({ tasks }: TasksProps) {
           <div className="flex gap-4">
             <div className="flex-1">
               <label className="block text-sm font-medium text-gray-300">
-                Status
+                Төлөв
               </label>
               <select
                 value={formData.isActive}
@@ -323,7 +323,7 @@ export default function Tasks({ tasks }: TasksProps) {
             </div>
             <div className="w-[100px]">
               <label className="block text-sm font-medium text-gray-300">
-                Working Days
+                Ажлын өдөр өдөр
               </label>
               <input
                 type="number"
@@ -349,7 +349,7 @@ export default function Tasks({ tasks }: TasksProps) {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-300">
-              Description
+              Тайлбар
             </label>
             <textarea
               value={formData.description}
@@ -399,7 +399,7 @@ export default function Tasks({ tasks }: TasksProps) {
       <Header
         title="Таск менежмент"
         extra={
-          <Button props={{ onClick: () => setOpen(true) }}>Add Task</Button>
+          <Button props={{ onClick: () => setOpen(true) }}>Таск нэмэх</Button>
         }
       />
       <div className="h-[calc(100vh-8rem)] overflow-y-auto px-10">

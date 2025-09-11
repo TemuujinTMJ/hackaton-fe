@@ -21,6 +21,7 @@ export default async function Home() {
   );
   const data: DashboardData = await res.json();
   const qaData = await qa.json();
+  console.log(data.questionStats);
   return (
     <div className="min-h-screen">
       <Header title="Хянах самбар" />

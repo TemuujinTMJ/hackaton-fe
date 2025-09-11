@@ -18,32 +18,32 @@ export default function HappinessIndex({
 }: HappinessIndexProps) {
   // Emotion mapping based on your emotionIndex enum
   const emotionMapping = {
-    1: { name: "Joy", image: "/happiness/joy.png", color: "#22C55E" },
-    2: { name: "Sadness", image: "/happiness/sadness.png", color: "#EF4444" },
+    1: { name: "Баяр хөөр", image: "/happiness/joy.png", color: "#22C55E" },
+    2: { name: "Гунигтай", image: "/happiness/sadness.png", color: "#EF4444" },
     3: {
-      name: "Disgust",
+      name: "Жигшээх",
       image: "/happiness/disgust.png",
       color: "#DC2626",
     },
-    4: { name: "Ennui", image: "/happiness/ennui.png", color: "#6B7280" },
-    5: { name: "Anger", image: "/happiness/anger.png", color: "#DC2626" },
-    6: { name: "Anxiety", image: "/happiness/anxiety.png", color: "#F59E0B" },
+    4: { name: "Уйтгар", image: "/happiness/ennui.png", color: "#6B7280" },
+    5: { name: "Уур хилэн", image: "/happiness/anger.png", color: "#DC2626" },
+    6: { name: "Түгшүүр", image: "/happiness/anxiety.png", color: "#F59E0B" },
     7: {
-      name: "Embarrassment",
+      name: "Ичгүүр",
       image: "/happiness/embarrassment.png",
       color: "#F97316",
     },
-    8: { name: "Envy", image: "/happiness/envy.png", color: "#10B981" },
-    9: { name: "Fear", image: "/happiness/fear.png", color: "#7C3AED" },
+    8: { name: "Атаархал", image: "/happiness/envy.png", color: "#10B981" },
+    9: { name: "Айдас", image: "/happiness/fear.png", color: "#7C3AED" },
   };
 
   return (
     <div className="bg-[#101522] rounded-2xl p-6 border border-gray-800">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-lg font-semibold text-white mb-1">Emotions</h2>
+          <h2 className="text-lg font-semibold text-white mb-1">Сэтгэл хөдлөл</h2>
         </div>
-        <span className="text-gray-400 text-sm">Last 7 days</span>
+        <span className="text-gray-400 text-sm">Сүүлийн 7 хоног</span>
       </div>
 
       {/* Vertical Emotions Chart */}

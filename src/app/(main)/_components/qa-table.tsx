@@ -1,5 +1,7 @@
 "use client";
 
+import Button from "@/app/_components/button";
+import Modal from "@/app/_components/modal";
 import { useState } from "react";
 
 interface QAItem {
@@ -17,17 +19,107 @@ interface QAItem {
 
 interface QATableProps {
   qaData: QAItem[];
+  onDataUpdate?: (updatedData: QAItem[]) => void;
 }
 
-export default function QATable({ qaData }: QATableProps) {
+export default function QATable({ qaData, onDataUpdate }: QATableProps) {
   const [currentPage, setCurrentPage] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedQuestion, setSelectedQuestion] = useState<QAItem | null>(null);
+  const [answerText, setAnswerText] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [localQaData, setLocalQaData] = useState<QAItem[]>(qaData);
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc" | "none">("none");
   const itemsPerPage = 6;
 
+  // Handle status sorting
+  const handleStatusSort = (selectedValue: string) => {
+    const newSortOrder = selectedValue as "asc" | "desc" | "none";
+    setSortOrder(newSortOrder);
+
+    const sortedData = [...localQaData];
+    if (newSortOrder === "asc") {
+      // Pending first (false), then Solved (true)
+      sortedData.sort((a, b) => Number(a.isSolved) - Number(b.isSolved));
+    } else if (newSortOrder === "desc") {
+      // Solved first (true), then Pending (false)
+      sortedData.sort((a, b) => Number(b.isSolved) - Number(a.isSolved));
+    } else {
+      // Reset to original order (by creation date)
+      sortedData.sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+    }
+
+    setLocalQaData(sortedData);
+    setCurrentPage(1); // Reset to first page when sorting
+  };
+
+  // Handle opening answer modal
+  const handleOpenAnswerModal = (question: QAItem) => {
+    setSelectedQuestion(question);
+    setAnswerText("");
+    setIsModalOpen(true);
+  };
+
+  // Handle closing modal
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedQuestion(null);
+    setAnswerText("");
+    setIsSubmitting(false);
+  };
+
+  // Submit answer to API
+  const handleSubmitAnswer = async () => {
+    if (!selectedQuestion || !answerText.trim()) return;
+
+    setIsSubmitting(true);
+    try {
+      const response = await fetch("/api/message", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: selectedQuestion._id,
+          answer_text: answerText.trim(),
+        }),
+      });
+
+      if (response.ok) {
+        // Update local data immediately for instant UI update
+        const updatedData = localQaData.map((item) =>
+          item._id === selectedQuestion._id
+            ? { ...item, answer_text: answerText.trim(), isSolved: true }
+            : item
+        );
+        setLocalQaData(updatedData);
+
+        // Call parent update if provided
+        if (onDataUpdate) {
+          onDataUpdate(updatedData);
+        }
+
+        handleCloseModal();
+      } else {
+        console.error("Failed to submit answer");
+        // You can add error handling here
+      }
+    } catch (error) {
+      console.error("Error submitting answer:", error);
+      // You can add error handling here
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   // Calculate pagination
-  const totalPages = Math.ceil(qaData.length / itemsPerPage);
+  const totalPages = Math.ceil(localQaData.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentItems = qaData.slice(startIndex, endIndex);
+  const currentItems = localQaData.slice(startIndex, endIndex);
 
   // Format date
   const formatDate = (dateString: string) => {
@@ -51,21 +143,26 @@ export default function QATable({ qaData }: QATableProps) {
       <div className="flex items-center justify-between w-full mb-6">
         <div>
           <h2 className="text-xl font-semibold text-white mb-2">
-            Questions & Answers
+            Асуулт & Хариулт
           </h2>
           <p className="text-gray-400 text-sm">
-            Total {qaData.length} questions •{" "}
-            {qaData.filter((q) => q.isSolved).length} solved
+            Нийт {localQaData.length} асуулт •{" "}
+            {localQaData.filter((q) => q.isSolved).length} шийдэгдсэн
           </p>
         </div>
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-4">
+          {/* Sort Controls */}
           <div className="flex items-center space-x-2">
-            <div className="w-3 h-3 rounded-full bg-green-500"></div>
-            <span className="text-gray-400 text-sm">Solved</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <div className="w-3 h-3 rounded-full bg-orange-500"></div>
-            <span className="text-gray-400 text-sm">Pending</span>
+            <span className="text-gray-400 text-sm">Эрэмбэлэх:</span>
+            <select
+              value={sortOrder}
+              onChange={(e) => handleStatusSort(e.target.value)}
+              className="px-3 py-1 bg-gray-800 border border-gray-700 rounded-lg text-gray-300 text-sm hover:border-gray-600 focus:border-blue-500 focus:outline-none transition-colors"
+            >
+              <option value="none">Анхны</option>
+              <option value="asc">Төлөв: Хүлээгдэж буй эхэнд</option>
+              <option value="desc">Төлөв: Шийдэгдсэн эхэнд</option>
+            </select>
           </div>
         </div>
       </div>
@@ -76,22 +173,22 @@ export default function QATable({ qaData }: QATableProps) {
           <thead>
             <tr className="border-b border-gray-800">
               <th className="text-left py-3 px-4 text-gray-400 text-sm font-medium">
-                Status
+                Төлөв
               </th>
               <th className="text-left py-3 px-4 text-gray-400 text-sm font-medium">
-                Question
+                Асуулт
               </th>
               <th className="text-left py-3 px-4 text-gray-400 text-sm font-medium">
-                Answer
+                Хариулт
               </th>
               <th className="text-left py-3 px-4 text-gray-400 text-sm font-medium">
-                Origin
+                Эх үүсвэр
               </th>
               <th className="text-left py-3 px-4 text-gray-400 text-sm font-medium">
-                Score
+                Оноо
               </th>
               <th className="text-left py-3 px-4 text-gray-400 text-sm font-medium">
-                Created
+                Үүсгэсэн
               </th>
             </tr>
           </thead>
@@ -115,7 +212,7 @@ export default function QATable({ qaData }: QATableProps) {
                           : "bg-orange-500/20 text-orange-400"
                       }`}
                     >
-                      {item.isSolved ? "Solved" : "Pending"}
+                      {item.isSolved ? "Шийдэгдсэн" : "Хүлээгдэж буй"}
                     </span>
                   </div>
                 </td>
@@ -133,9 +230,11 @@ export default function QATable({ qaData }: QATableProps) {
                         {truncateText(item.answer_text, 80)}
                       </p>
                     ) : (
-                      <span className="text-gray-500 italic">
-                        No answer yet
-                      </span>
+                      <Button
+                        props={{ onClick: () => handleOpenAnswerModal(item) }}
+                      >
+                        Хариулах
+                      </Button>
                     )}
                   </div>
                 </td>
@@ -170,8 +269,8 @@ export default function QATable({ qaData }: QATableProps) {
       {totalPages > 1 && (
         <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-800 w-full">
           <div className="text-gray-400 text-sm">
-            Showing {startIndex + 1} to {Math.min(endIndex, qaData.length)} of{" "}
-            {qaData.length} results
+            {startIndex + 1}-с {Math.min(endIndex, localQaData.length)}{" "}
+            хүртэл {localQaData.length} үр дүнгээс
           </div>
           <div className="flex items-center space-x-2">
             <button
@@ -179,7 +278,7 @@ export default function QATable({ qaData }: QATableProps) {
               disabled={currentPage === 1}
               className="px-3 py-1 rounded-lg text-sm bg-gray-800 text-gray-300 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              Previous
+              Өмнөх
             </button>
 
             <div className="flex items-center space-x-1">
@@ -218,7 +317,7 @@ export default function QATable({ qaData }: QATableProps) {
               disabled={currentPage === totalPages}
               className="px-3 py-1 rounded-lg text-sm bg-gray-800 text-gray-300 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              Next
+              Дараах
             </button>
           </div>
         </div>
@@ -243,13 +342,83 @@ export default function QATable({ qaData }: QATableProps) {
             </svg>
           </div>
           <h3 className="text-white text-lg font-medium mb-2">
-            No Questions Yet
+            Асуулт одоогоор байхгүй
           </h3>
           <p className="text-gray-400 text-sm">
-            Questions and answers will appear here once they are submitted.
+            Асуулт хариултууд илгээгдсэний дараа энд харагдах болно.
           </p>
         </div>
       )}
+
+      {/* Answer Question Modal */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        title="Асуултанд хариулах"
+        primaryButton={{
+          label: "Илгээх",
+          onClick: handleSubmitAnswer,
+          loading: isSubmitting,
+        }}
+        secondaryButton={{
+          label: "Цуцлах",
+          onClick: handleCloseModal,
+          loading: isSubmitting,
+        }}
+      >
+        <div className="space-y-4">
+          {selectedQuestion && (
+            <>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Асуулт:
+                </label>
+                <div className="p-3 bg-gray-800 rounded-lg text-gray-300 text-sm">
+                  {selectedQuestion.question_text}
+                </div>
+              </div>
+
+              <div>
+                <label
+                  htmlFor="answer"
+                  className="block text-sm font-medium text-gray-300 mb-2"
+                >
+                  Таны хариулт:
+                </label>
+                <textarea
+                  id="answer"
+                  value={answerText}
+                  onChange={(e) => setAnswerText(e.target.value)}
+                  rows={6}
+                  className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                  placeholder="Хариултаа энд бичнэ үү..."
+                />
+              </div>
+
+              {/* <div className="flex items-center space-x-3 pt-4">
+                <button
+                  onClick={handleSubmitAnswer}
+                  disabled={!answerText.trim() || isSubmitting}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center space-x-2"
+                >
+                  {isSubmitting && (
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  )}
+                  <span>
+                    {isSubmitting ? "Submitting..." : "Submit Answer"}
+                  </span>
+                </button>
+                <button
+                  onClick={handleCloseModal}
+                  className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                >
+                  Cancel
+                </button>
+              </div> */}
+            </>
+          )}
+        </div>
+      </Modal>
     </div>
   );
 }
