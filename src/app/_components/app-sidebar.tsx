@@ -79,7 +79,7 @@ export function AppSidebar() {
               },
             }}
           >
-            Log out
+            Системээс гарах
           </Button>
         </div>
       </div>
