@@ -4,7 +4,7 @@ import Chat from "./chat";
 
 export default function Page() {
   return (
-    <div className="h-full">
+    <div className="max-h-screen h-full">
       <Header title="AI туслах" />
       <Chat />
     </div>

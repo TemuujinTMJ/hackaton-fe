@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 interface HappinessIndexProps {
   happinessStats: Array<{
     date: string;
@@ -14,69 +16,39 @@ interface HappinessIndexProps {
 export default function HappinessIndex({
   happinessStats,
 }: HappinessIndexProps) {
-  // Calculate average happiness percentage
-  const calculateHappinessPercentage = () => {
-    const latestHappiness = happinessStats?.slice(-1)[0];
-    if (!latestHappiness?.emotion.length) return "28.5%";
-
-    const totalWorkers = latestHappiness.emotion.reduce(
-      (sum, e) => sum + e.totalWorkers,
-      0
-    );
-    const avgHappiness =
-      totalWorkers > 0
-        ? latestHappiness.emotion.reduce(
-            (sum, e) => sum + e.emotionIndex * e.totalWorkers,
-            0
-          ) / totalWorkers
-        : 2.85;
-
-    return `${(avgHappiness * 10).toFixed(1)}%`;
-  };
-
-  // Helper function to get emotion names
-  const getEmotionName = (level: number): string => {
-    const emotions = {
-      1: "Very Sad",
-      2: "Sad",
-      3: "Unhappy",
-      4: "Neutral-",
-      5: "Neutral",
-      6: "Neutral+",
-      7: "Happy",
-      8: "Very Happy",
-      9: "Extremely Happy",
-    };
-    return emotions[level as keyof typeof emotions] || `Level ${level}`;
-  };
-
-  // Color function for emotions
-  const getEmotionColor = (level: number): string => {
-    if (level <= 3) return "#EF4444"; // Red for sad
-    if (level <= 4) return "#F97316"; // Orange for slightly sad
-    if (level === 5) return "#EAB308"; // Yellow for neutral
-    if (level <= 6) return "#FACC15"; // Light yellow for slightly happy
-    if (level <= 7) return "#4ADE80"; // Light green for happy
-    return "#22C55E"; // Green for very happy
+  // Emotion mapping based on your emotionIndex enum
+  const emotionMapping = {
+    1: { name: "Joy", image: "/happiness/joy.png", color: "#22C55E" },
+    2: { name: "Sadness", image: "/happiness/sadness.png", color: "#EF4444" },
+    3: {
+      name: "Disgust",
+      image: "/happiness/disgust.png",
+      color: "#DC2626",
+    },
+    4: { name: "Ennui", image: "/happiness/ennui.png", color: "#6B7280" },
+    5: { name: "Anger", image: "/happiness/anger.png", color: "#DC2626" },
+    6: { name: "Anxiety", image: "/happiness/anxiety.png", color: "#F59E0B" },
+    7: {
+      name: "Embarrassment",
+      image: "/happiness/embarrassment.png",
+      color: "#F97316",
+    },
+    8: { name: "Envy", image: "/happiness/envy.png", color: "#10B981" },
+    9: { name: "Fear", image: "/happiness/fear.png", color: "#7C3AED" },
   };
 
   return (
     <div className="bg-[#101522] rounded-2xl p-6 border border-gray-800">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-lg font-semibold text-white mb-1">
-            Happiness index
-          </h2>
-          <div className="text-green-400 text-sm font-medium">
-            {calculateHappinessPercentage()}
-          </div>
+          <h2 className="text-lg font-semibold text-white mb-1">Emotions</h2>
         </div>
-        <span className="text-gray-400 text-sm">Last 12 months</span>
+        <span className="text-gray-400 text-sm">Last 7 days</span>
       </div>
 
-      {/* Vertical Emotions Chart (1-9) */}
-      <div className="h-48 flex items-end justify-center">
-        <svg viewBox="0 0 400 230" className="w-full h-full">
+      {/* Vertical Emotions Chart */}
+      <div className="h-80 w-full">
+        <svg viewBox="0 0 800 380" className="w-full h-full">
           {(() => {
             // Get latest happiness data for emotion distribution
             const latestHappiness = happinessStats?.slice(-1)[0];
@@ -95,151 +67,128 @@ export default function HappinessIndex({
               );
             }
 
-            // Create emotion levels 1-9 with their worker counts
-            const emotionLevels = Array.from({ length: 9 }, (_, i) => {
-              const level = i + 1;
-              const emotionData = latestHappiness.emotion.find(
-                (e) => e.emotionIndex === level
-              );
-              return {
-                level,
-                count: emotionData?.totalWorkers || 0,
-                emotion: emotionData?.emotion || getEmotionName(level),
-              };
-            });
+            // Create emotion data from the latest happiness data using emotionIndex
+            const emotionCounts = Object.entries(emotionMapping).map(
+              ([index, emotionInfo]) => {
+                const emotionIndex = parseInt(index);
+                const matchingEmotion = latestHappiness.emotion.find(
+                  (e) => e.emotionIndex === emotionIndex
+                );
+
+                return {
+                  index: emotionIndex,
+                  name: emotionInfo.name,
+                  image: emotionInfo.image,
+                  color: emotionInfo.color,
+                  count: matchingEmotion?.totalWorkers || 0,
+                };
+              }
+            );
 
             // Get max count for scaling bars
-            const maxCount = Math.max(...emotionLevels.map((e) => e.count), 1);
+            const maxCount = Math.max(...emotionCounts.map((e) => e.count), 1);
 
-            // Bar configuration - adjusted for more top space
-            const barWidth = 35;
-            const barSpacing = 8;
-            const chartHeight = 140; // Reduced to make room for labels
-            const startX = 20;
+            // Bar configuration - full width chart
+            const totalWidth = 720;
+            const barSpacing = 12;
+            const barWidth =
+              (totalWidth -
+                (Object.keys(emotionMapping).length - 1) * barSpacing) /
+              Object.keys(emotionMapping).length;
+            const chartHeight = 300;
+            const startX = 40;
 
             return (
               <>
-                {/* Vertical bars for each emotion level */}
-                {emotionLevels.map((emotion, index) => {
+                {/* Vertical bars for each emotion */}
+                {emotionCounts.map((emotion, index) => {
                   const barHeight =
                     maxCount > 0 ? (emotion.count / maxCount) * chartHeight : 0;
                   const x = startX + index * (barWidth + barSpacing);
-                  const baseY = 180; // Base line for bars
+                  const baseY = 260; // Base line for bars
                   const y = baseY - barHeight;
 
                   return (
-                    <g key={emotion.level}>
-                      {/* Bar */}
-                      <rect
-                        x={x}
-                        y={y}
-                        width={barWidth}
-                        height={barHeight}
-                        fill={getEmotionColor(emotion.level)}
-                        rx="4"
-                        className="transition-all duration-500"
-                        opacity="0.8"
-                      />
+                    <g key={emotion.name}>
+                      {/* Bar with hover group */}
+                      <g className="group cursor-pointer">
+                        {/* Bar */}
+                        <rect
+                          x={x}
+                          y={y}
+                          width={barWidth}
+                          height={barHeight}
+                          fill={emotion.color}
+                          rx="4"
+                          className="transition-all duration-500 group-hover:opacity-100"
+                          opacity="0.8"
+                        />
+                        {/* Bar highlight */}
+                        <rect
+                          x={x}
+                          y={y}
+                          width={barWidth}
+                          height={Math.max(barHeight * 0.3, 4)}
+                          fill={emotion.color}
+                          rx="4"
+                          className="transition-all duration-500"
+                          opacity="1"
+                        />
+                        {/* Emotion image at bottom */}
+                        <foreignObject
+                          x={x + (barWidth - 50) / 2}
+                          y="270"
+                          width="50"
+                          height="50"
+                        >
+                          <Image
+                            src={emotion.image}
+                            alt={emotion.name}
+                            width={50}
+                            height={50}
+                            className="object-contain"
+                          />
+                        </foreignObject>
 
-                      {/* Bar highlight */}
-                      <rect
-                        x={x}
-                        y={y}
-                        width={barWidth}
-                        height={Math.max(barHeight * 0.3, 4)}
-                        fill={getEmotionColor(emotion.level)}
-                        rx="4"
-                        className="transition-all duration-500"
-                        opacity="1"
-                      />
-
-                      {/* Emotion level number */}
-                      <text
-                        x={x + barWidth / 2}
-                        y="200"
-                        fill="#9CA3AF"
-                        fontSize="12"
-                        textAnchor="middle"
-                        fontWeight="600"
-                      >
-                        {emotion.level}
-                      </text>
-
-                      {/* Worker count on top of bar - with proper spacing */}
-                      {emotion.count > 0 && (
+                        {/* Diagonal emotion name below image */}
                         <text
                           x={x + barWidth / 2}
-                          y={Math.max(y - 8, 20)}
-                          fill="#FFFFFF"
-                          fontSize="10"
-                          textAnchor="middle"
+                          y="335"
+                          fill="#9CA3AF"
+                          fontSize="16"
+                          textAnchor="end"
                           fontWeight="500"
+                          transform={`rotate(-50, ${x + barWidth / 2}, 335)`}
+                          className="transition-colors duration-300 group-hover:fill-white"
                         >
-                          {emotion.count}
+                          {emotion.name}
                         </text>
-                      )}
+                      </g>
                     </g>
                   );
                 })}
-
                 {/* Y-axis line */}
                 <line
-                  x1="15"
-                  y1="30"
-                  x2="15"
-                  y2="180"
+                  x1="30"
+                  y1="40"
+                  x2="30"
+                  y2="260"
                   stroke="#374151"
                   strokeWidth="1"
                 />
-
                 {/* X-axis line */}
                 <line
-                  x1="15"
-                  y1="180"
-                  x2="390"
-                  y2="180"
+                  x1="30"
+                  y1="260"
+                  x2="770"
+                  y2="260"
                   stroke="#374151"
                   strokeWidth="1"
                 />
-
-                {/* Y-axis label */}
-                <text
-                  x="10"
-                  y="105"
-                  fill="#9CA3AF"
-                  fontSize="10"
-                  textAnchor="middle"
-                  transform="rotate(-90, 10, 105)"
-                >
-                  Workers
-                </text>
-
-                {/* X-axis label */}
-                <text
-                  x="200"
-                  y="225"
-                  fill="#9CA3AF"
-                  fontSize="10"
-                  textAnchor="middle"
-                >
-                  Emotion Level (1=Sad → 9=Happy)
-                </text>
               </>
             );
           })()}
         </svg>
-      </div>
-
-      <div className="flex justify-between items-center mt-4 pt-4 border-t border-gray-800">
-        <span className="text-gray-400 text-sm">
-          {(() => {
-            const dataCount = happinessStats?.length || 0;
-            if (dataCount === 0) return "No data available";
-            if (dataCount === 1) return "1 data point";
-            return `Last ${dataCount} data points`;
-          })()}
-        </span>
-        <span className="text-gray-400 text-sm">Live data</span>
       </div>
     </div>
   );

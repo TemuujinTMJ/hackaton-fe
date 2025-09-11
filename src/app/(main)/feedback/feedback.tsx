@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { EmptyState } from "../_components";
 
 interface FeedbackProps {
   _id: string;
@@ -52,72 +53,75 @@ export default function Feedback({
         })}
       </div>
 
-      {/* Feedback Table */}
-      <div className="overflow-x-auto">
-        <table className="min-w-full rounded-lg">
-          <thead>
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                Асуулт
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                Төрөл
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                Огноо
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                Статус
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-[#2A2A2A]">
-            {filteredData.map((feedback, idx) => (
-              <tr
-                key={feedback._id}
-                className={`${
-                  idx % 2 === 0 && "bg-[#1C1D2F]"
-                } border-b border-transparent hover:border-gray-500`}
-              >
-                <td className="px-6 py-4 whitespace-pre-wrap">
-                  <div className="flex items-center">
-                    <span className="text-sm">{feedback.question}</span>
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="text-sm inline-flex flex-wrap gap-1">
-                    {feedback.categoryId.map((cat) => (
-                      <div
-                        key={cat._id}
-                        className="px-2.5 py-0.5 rounded-full bg-gray-800"
-                      >
-                        {cat.categoryName}
-                      </div>
-                    ))}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="text-sm">
-                    {new Date(feedback.createdAt).toLocaleDateString()}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span
-                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+      {filteredData.length !== 0 ? (
+        <div className="overflow-x-auto">
+          <table className="min-w-full rounded-lg">
+            <thead>
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                  Асуулт
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                  Төрөл
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                  Огноо
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                  Статус
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-[#2A2A2A]">
+              {filteredData.map((feedback, idx) => (
+                <tr
+                  key={feedback._id}
+                  className={`${
+                    idx % 2 === 0 && "bg-[#1C1D2F]"
+                  } border-b border-transparent hover:border-gray-500`}
+                >
+                  <td className="px-6 py-4 whitespace-pre-wrap">
+                    <div className="flex items-center">
+                      <span className="text-sm">{feedback.question}</span>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className="text-sm inline-flex flex-wrap gap-1">
+                      {feedback.categoryId.map((cat) => (
+                        <div
+                          key={cat._id}
+                          className="px-2.5 py-0.5 rounded-full bg-gray-800"
+                        >
+                          {cat.categoryName}
+                        </div>
+                      ))}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className="text-sm">
+                      {new Date(feedback.createdAt).toLocaleDateString()}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span
+                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
                     ${
                       feedback.isSolved
                         ? "bg-green-100 text-green-800"
                         : "bg-yellow-100 text-yellow-800"
                     }`}
-                  >
-                    {feedback.isSolved ? "Шийдэгдсэн" : "Хүлээгдэж буй"}
-                  </span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+                    >
+                      {feedback.isSolved ? "Шийдэгдсэн" : "Хүлээгдэж буй"}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <EmptyState />
+      )}
     </div>
   );
 }

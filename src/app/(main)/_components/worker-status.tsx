@@ -18,15 +18,14 @@ export default function WorkerStatus({ workerStats }: WorkerStatusProps) {
       </div>
 
       <div className="flex flex-col items-center">
-        <div className="relative w-48 h-24 mb-6">
-          <svg viewBox="0 0 200 100" className="w-full h-full">
+        <div className="relative w-96 h-32 ">
+          <svg viewBox="0 -10 200 100" className="w-full h-full">
             {/* Background Arc */}
             <path
               d="M 20 80 A 80 80 0 0 1 180 80"
               fill="none"
               stroke="#374151"
-              strokeWidth="8"
-              strokeLinecap="round"
+              strokeWidth="10"
             />
 
             {(() => {
@@ -37,83 +36,109 @@ export default function WorkerStatus({ workerStats }: WorkerStatusProps) {
               const inactiveWorkers = workerStats?.inactive || 0;
               const totalWorkers = workerStats?.totalWorker || 1;
 
-              // Calculate individual percentages
-              const activePercentage = (activeWorkers / totalWorkers) * 100;
-              const remotePercentage = (remoteWorkers / totalWorkers) * 100;
-              const vacationPercentage =
-                (onVacationWorkers / totalWorkers) * 100;
-              const inactivePercentage = (inactiveWorkers / totalWorkers) * 100;
+              // Calculate angles for each segment (180 degrees total)
+              const activeAngle = (activeWorkers / totalWorkers) * 180;
+              const remoteAngle = (remoteWorkers / totalWorkers) * 180;
+              const vacationAngle = (onVacationWorkers / totalWorkers) * 180;
+              const inactiveAngle = (inactiveWorkers / totalWorkers) * 180;
 
-              // Calculate arc lengths (180 degrees total = 160 units)
-              const activeArcLength = (activePercentage / 100) * 160;
-              const remoteArcLength = (remotePercentage / 100) * 160;
-              const vacationArcLength = (vacationPercentage / 100) * 160;
-              const inactiveArcLength = (inactivePercentage / 100) * 160;
+              // Calculate cumulative angles
+              let currentAngle = 0;
+              const segments = [];
 
-              // Calculate cumulative offsets for stacking arcs
-              const activeOffset = 0;
-              const remoteOffset = activeArcLength;
-              const vacationOffset = activeArcLength + remoteArcLength;
-              const inactiveOffset =
-                activeArcLength + remoteArcLength + vacationArcLength;
+              // Helper function to create arc path
+              const createArcPath = (startAngle: number, endAngle: number) => {
+                const centerX = 100;
+                const centerY = 80;
+                const radius = 80;
+
+                const startRadians = (startAngle * Math.PI) / 180;
+                const endRadians = (endAngle * Math.PI) / 180;
+
+                const x1 = centerX - radius * Math.cos(startRadians);
+                const y1 = centerY - radius * Math.sin(startRadians);
+                const x2 = centerX - radius * Math.cos(endRadians);
+                const y2 = centerY - radius * Math.sin(endRadians);
+
+                const largeArcFlag = endAngle - startAngle > 180 ? 1 : 0;
+
+                return `M ${x1} ${y1} A ${radius} ${radius} 0 ${largeArcFlag} 1 ${x2} ${y2}`;
+              };
+
+              // Active Workers Segment
+              if (activeWorkers > 0) {
+                const startAngle = currentAngle;
+                const endAngle = currentAngle + activeAngle;
+                segments.push(
+                  <path
+                    key="active"
+                    d={createArcPath(startAngle, endAngle)}
+                    fill="none"
+                    stroke="#CB3CFF"
+                    strokeWidth="10"
+                    strokeLinecap="butt"
+                    className="transition-all duration-1000"
+                  />
+                );
+                currentAngle = endAngle;
+              }
+
+              // Remote Workers Segment
+              if (remoteWorkers > 0) {
+                const startAngle = currentAngle;
+                const endAngle = currentAngle + remoteAngle;
+                segments.push(
+                  <path
+                    key="remote"
+                    d={createArcPath(startAngle, endAngle)}
+                    fill="none"
+                    stroke="#57C3FF"
+                    strokeWidth="10"
+                    strokeLinecap="butt"
+                    className="transition-all duration-1000"
+                  />
+                );
+                currentAngle = endAngle;
+              }
+
+              // Vacation Workers Segment
+              if (onVacationWorkers > 0) {
+                const startAngle = currentAngle;
+                const endAngle = currentAngle + vacationAngle;
+                segments.push(
+                  <path
+                    key="vacation"
+                    d={createArcPath(startAngle, endAngle)}
+                    fill="none"
+                    stroke="#9A91FB"
+                    strokeWidth="10"
+                    strokeLinecap="butt"
+                    className="transition-all duration-1000"
+                  />
+                );
+                currentAngle = endAngle;
+              }
+
+              // Inactive Workers Segment
+              if (inactiveWorkers > 0) {
+                const startAngle = currentAngle;
+                const endAngle = currentAngle + inactiveAngle;
+                segments.push(
+                  <path
+                    key="inactive"
+                    d={createArcPath(startAngle, endAngle)}
+                    fill="none"
+                    stroke="#D1DBF9"
+                    strokeWidth="10"
+                    strokeLinecap="butt"
+                    className="transition-all duration-1000"
+                  />
+                );
+              }
 
               return (
                 <>
-                  {/* Active Workers Arc - Purple */}
-                  {activeArcLength > 0 && (
-                    <path
-                      d="M 20 80 A 80 80 0 0 1 180 80"
-                      fill="none"
-                      stroke="#8B5CF6"
-                      strokeWidth="8"
-                      strokeLinecap="round"
-                      strokeDasharray={`${activeArcLength} 160`}
-                      strokeDashoffset={-activeOffset}
-                      className="transition-all duration-1000"
-                    />
-                  )}
-
-                  {/* Remote Workers Arc - Cyan */}
-                  {remoteArcLength > 0 && (
-                    <path
-                      d="M 20 80 A 80 80 0 0 1 180 80"
-                      fill="none"
-                      stroke="#06B6D4"
-                      strokeWidth="8"
-                      strokeLinecap="round"
-                      strokeDasharray={`${remoteArcLength} 160`}
-                      strokeDashoffset={-remoteOffset}
-                      className="transition-all duration-1000"
-                    />
-                  )}
-
-                  {/* On Vacation Workers Arc - Yellow */}
-                  {vacationArcLength > 0 && (
-                    <path
-                      d="M 20 80 A 80 80 0 0 1 180 80"
-                      fill="none"
-                      stroke="#EAB308"
-                      strokeWidth="8"
-                      strokeLinecap="round"
-                      strokeDasharray={`${vacationArcLength} 160`}
-                      strokeDashoffset={-vacationOffset}
-                      className="transition-all duration-1000"
-                    />
-                  )}
-
-                  {/* Inactive Workers Arc - Gray */}
-                  {inactiveArcLength > 0 && (
-                    <path
-                      d="M 20 80 A 80 80 0 0 1 180 80"
-                      fill="none"
-                      stroke="#6B7280"
-                      strokeWidth="8"
-                      strokeLinecap="round"
-                      strokeDasharray={`${inactiveArcLength} 160`}
-                      strokeDashoffset={-inactiveOffset}
-                      className="transition-all duration-1000"
-                    />
-                  )}
+                  {segments}
 
                   {/* Center Value - Show most relevant metric */}
                   <text
@@ -139,10 +164,13 @@ export default function WorkerStatus({ workerStats }: WorkerStatusProps) {
         </div>
 
         {/* Real Worker Status Legend */}
-        <div className="w-full space-y-3">
+        <div className="w-full grid grid-cols-2 gap-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 rounded bg-purple-500"></div>
+              <div
+                className="w-3 h-3 rounded"
+                style={{ backgroundColor: "#CB3CFF" }}
+              ></div>
               <span className="text-gray-400 text-sm">Active</span>
             </div>
             <span className="text-white text-sm font-medium">
@@ -151,7 +179,10 @@ export default function WorkerStatus({ workerStats }: WorkerStatusProps) {
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 rounded bg-cyan-500"></div>
+              <div
+                className="w-3 h-3 rounded"
+                style={{ backgroundColor: "#57C3FF" }}
+              ></div>
               <span className="text-gray-400 text-sm">Remote</span>
             </div>
             <span className="text-white text-sm font-medium">
@@ -160,7 +191,10 @@ export default function WorkerStatus({ workerStats }: WorkerStatusProps) {
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 rounded bg-yellow-500"></div>
+              <div
+                className="w-3 h-3 rounded"
+                style={{ backgroundColor: "#9A91FB" }}
+              ></div>
               <span className="text-gray-400 text-sm">On Vacation</span>
             </div>
             <span className="text-white text-sm font-medium">
@@ -169,7 +203,10 @@ export default function WorkerStatus({ workerStats }: WorkerStatusProps) {
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 rounded bg-gray-600"></div>
+              <div
+                className="w-3 h-3 rounded"
+                style={{ backgroundColor: "#D1DBF9" }}
+              ></div>
               <span className="text-gray-400 text-sm">Inactive</span>
             </div>
             <span className="text-white text-sm font-medium">

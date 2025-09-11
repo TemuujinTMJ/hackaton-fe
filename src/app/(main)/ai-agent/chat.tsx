@@ -1,5 +1,6 @@
 "use client";
 import { ArrowUp } from "lucide-react";
+import Image from "next/image";
 import React from "react";
 
 interface ChatResponse {
@@ -12,7 +13,7 @@ export default function Chat() {
   const [loading, setLoading] = React.useState(false);
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
-
+  const user = JSON.parse(localStorage.getItem("user") || '{name: "User"}');
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -28,12 +29,14 @@ export default function Chat() {
     const newMessage: ChatResponse = { content: text, received: false };
     setData((prev) => [...(prev || []), newMessage]);
     setText("");
+    const token = localStorage.getItem("sessionToken");
 
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `${token}`,
         },
         body: JSON.stringify({ content: text }),
       });
@@ -65,11 +68,20 @@ export default function Chat() {
         textareaRef.current.scrollHeight + "px";
     }
   };
+  const suggestions = [
+    "Байгууллагын унэт зүйл",
+    "Дотоод журам",
+    "Цалингийн задаргаа",
+  ];
 
+  const handleSuggestionClick = (suggestion: string) => {
+    setText(suggestion);
+    fetchData({ text: suggestion });
+  };
   return (
     <div
-      className={`flex flex-col gap-10 ${
-        data?.length ? "h-[calc(100vh-8rem)]" : "h-full justify-center"
+      className={`flex flex-col gap-10 h-[calc(100vh-8rem)] ${
+        data?.length ?? " h-[calc(100vh-8rem)] justify-center"
       } px-32`}
     >
       {/* Messages Container */}
@@ -83,11 +95,33 @@ export default function Chat() {
               }`}
             >
               <div
-                className={`max-w-[80%] rounded-lg p-4 ${
-                  message.received && "bg-[#FFFFFF1A]  shadow-sm"
+                className={`max-w-[80%] rounded-lg p-4 flex gap-2 items-start ${
+                  message.received &&
+                  "bg-[#FFFFFF1A]  shadow-sm gap-2  flex-row-reverse"
                 }`}
               >
-                {message.content}
+                <div
+                  className={`flex flex-col gap-1  ${
+                    !message.received && "items-end"
+                  }`}
+                >
+                  <div>
+                    {!message.received ? (
+                      <span className="font-bold text-xl">{user?.name}</span>
+                    ) : (
+                      <span className="bg-gradient-to-r text-xl from-[#83BCE0] to-[#CB98E5] text-transparent bg-clip-text font-bold">
+                        HR
+                      </span>
+                    )}
+                  </div>
+                  <div className="text-zinc-300">{message.content}</div>
+                </div>
+                <Image
+                  src="/login/blob.png"
+                  alt="Chat message"
+                  width={50}
+                  height={50}
+                />
               </div>
             </div>
           ))}
@@ -126,7 +160,10 @@ export default function Chat() {
 
       {/* Input Form */}
       <div>
-        <form onSubmit={handleSubmit} className="relative flex items-center">
+        <form
+          onSubmit={handleSubmit}
+          className="relative flex items-center mb-6"
+        >
           <textarea
             ref={textareaRef}
             value={text}
@@ -136,8 +173,8 @@ export default function Chat() {
             }}
             onKeyDown={handleKeyDown}
             placeholder="Танд ямар тусламж хэрэгтэй вэ?"
-            className="w-full p-4 pr-24 rounded-xl border border-zinc-500 focus:outline-none focus:border-blue-500 resize-none max-h-80 min-h-28"
-            rows={1}
+            className="w-full p-4 pr-24 rounded-xl border border-zinc-500 bg-[#1B202F] focus:outline-none focus:border-blue-500 resize-none max-h-80 min-h-28"
+            rows={4}
           />
           <button
             type="submit"
@@ -152,6 +189,21 @@ export default function Chat() {
             <ArrowUp color="white" />
           </button>
         </form>
+        <div
+          className={`flex flex-wrap gap-3 justify-center ${
+            data?.length && "hidden"
+          }`}
+        >
+          {suggestions.map((suggestion, index) => (
+            <button
+              key={index}
+              onClick={() => handleSuggestionClick(suggestion)}
+              className="px-6 py-3 rounded-xl backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 hover:border-white/30 transition-all duration-200 text-sm font-medium"
+            >
+              {suggestion}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );

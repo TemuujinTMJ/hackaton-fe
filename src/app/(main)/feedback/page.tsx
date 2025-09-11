@@ -1,6 +1,7 @@
 import Header from "@/app/_components/header";
 import { Suspense } from "react";
 import Feedback from "./feedback";
+import { SmallLoader } from "../_components";
 
 export default async function Page() {
   const resCat = await fetch(
@@ -18,7 +19,7 @@ export default async function Page() {
   return (
     <div>
       <Header title="Нийт ажилчид" />
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<SmallLoader />}>
         <Feedback data={data.data} cat={cat.data} />
       </Suspense>
     </div>
