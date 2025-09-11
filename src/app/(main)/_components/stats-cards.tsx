@@ -40,19 +40,32 @@ export default function StatsCards({
   const calculateAvgHappiness = () => {
     if (!happinessStats || happinessStats.length === 0) return 0;
 
+    // Emotion index to happiness point mapping
+    const emotionToPointMapping: { [key: number]: number } = {
+      1: 9, // Joy = 9 points
+      7: 8, // Embarrassment = 8 points
+      8: 7, // Envy = 7 points
+      4: 6, // Ennui = 6 points
+      6: 5, // Anxiety = 5 points
+      9: 4, // Fear = 4 points
+      3: 3, // Disgust = 3 points
+      2: 2, // Sadness = 2 points
+      5: 1, // Anger = 1 point
+    };
+
     let totalScore = 0;
     let totalWorkers = 0;
 
     happinessStats.forEach((day) => {
       day.emotion.forEach((emotion) => {
-        totalScore += emotion.emotionIndex * emotion.totalWorkers;
+        const happinessPoint = emotionToPointMapping[emotion.emotionIndex] || 0;
+        totalScore += happinessPoint * emotion.totalWorkers;
         totalWorkers += emotion.totalWorkers;
       });
     });
-
     return totalWorkers > 0 ? (totalScore / totalWorkers).toFixed(1) : 0;
   };
-
+  console.log(happinessStats);
   const completedTasks =
     taskTypeCompletions?.reduce((acc, task) => acc + task.count, 0) || 0;
 
