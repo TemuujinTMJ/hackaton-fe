@@ -194,7 +194,7 @@ export default function Files({
         <select
           value={selectedType}
           onChange={(e) => setSelectedType(e.target.value)}
-          className="px-4 py-2  border border-zinc-500 rounded-lg text-white focus:outline-none focus:border-blue-500 cursor-pointer"
+          className="px-4 py-2 border border-zinc-500 rounded-lg text-white focus:outline-none focus:border-blue-500 cursor-pointer"
         >
           <option value="all">Бүх төрөл</option>
           <option value="xlsx">Excel</option>

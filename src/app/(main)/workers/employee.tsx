@@ -6,6 +6,7 @@ import Header from "@/app/_components/header";
 import Modal from "@/app/_components/modal";
 import { Pen, Trash, Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
+import Image from "next/image";
 
 interface Employee {
   _id: string;
@@ -51,7 +52,7 @@ export default function Employee({ data: initialData }: { data: Employee[] }) {
   const [editingEmployee, setEditingEmployee] = useState<Employee | null>(null);
   const [errors, setErrors] = useState<ValidationErrors>({});
   const getInitial = (str?: string) => (str && str.length > 0 ? str[0] : "");
-
+  console.log(data);
   const validateForm = (employeeData: EmployeeFormData): boolean => {
     const newErrors: ValidationErrors = {};
 
@@ -477,12 +478,23 @@ export default function Employee({ data: initialData }: { data: Employee[] }) {
               >
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center">
-                    <div className="h-8 w-8 rounded-full bg-blue-600 mr-3 flex items-center justify-center">
-                      <span className="text-sm">
-                        {getInitial(employee?.first_name || "")}
-                        {getInitial(employee?.last_name || "")}
-                      </span>
-                    </div>
+                    {employee.profile_img ? (
+                      <Image
+                        src={employee.profile_img}
+                        alt={`${employee.first_name} ${employee.last_name}`}
+                        width={32}
+                        height={32}
+                        className="h-8 w-8 rounded-full mr-3"
+                      />
+                    ) : (
+                      <div className="h-8 w-8 rounded-full bg-blue-600 mr-3 flex items-center justify-center">
+                        <span className="text-sm">
+                          {getInitial(employee?.first_name || "")}
+                          {getInitial(employee?.last_name || "")}
+                        </span>
+                      </div>
+                    )}
+
                     <div>
                       <div className="text-sm font-medium">
                         {employee.first_name} {employee.last_name}
