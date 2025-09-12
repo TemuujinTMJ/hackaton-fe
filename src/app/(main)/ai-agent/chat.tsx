@@ -71,7 +71,7 @@ export default function Chat() {
   const suggestions = [
     "Байгууллагын үнэт зүйл",
     "Дотоод журам",
-    "Цалингийн задаргаа",
+    "Ажлийн цагийн хуваарь",
   ];
 
   const handleSuggestionClick = (suggestion: string) => {
