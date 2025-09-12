@@ -38,7 +38,11 @@ export default function Login() {
 
           <button
             // variant="ghost"
-            className="w-[370px] flex items-center bg-white text-black py-6 rounded-2xl justify-center gap-2"
+            className="w-[370px] flex items-center bg-white text-black py-6 rounded-2xl justify-center gap-2 
+                       microsoft-login-btn transform transition-all duration-300 ease-out group
+                       hover:scale-105 hover:shadow-xl hover:shadow-blue-500/25 
+                       hover:bg-gradient-to-r hover:from-white hover:to-blue-50
+                       active:scale-95 active:duration-75"
             onClick={handleLogin}
           >
             <Image
@@ -47,8 +51,11 @@ export default function Login() {
               width={16}
               height={16}
               priority
+              className="transition-transform duration-300 group-hover:rotate-12"
             />
-            <p className="text-[13px]">Microsoft office 365</p>
+            <p className="text-[13px] font-medium transition-colors duration-300">
+              Microsoft office 365
+            </p>
           </button>
 
           {/* <InfoTooltip

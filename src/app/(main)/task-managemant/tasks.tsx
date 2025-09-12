@@ -271,9 +271,9 @@ export default function Tasks({ tasks }: TasksProps) {
                 className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white"
                 required
               >
-                <option value="normal">Энгийн</option>
-                <option value="urgent">Яаралтай</option>
-                <option value="onboarding">Танилцуулга</option>
+                <option value="normal">Туршилтын хугацааны даалгавар</option>
+                <option value="urgent">Яаралтай даалгавар</option>
+                <option value="onboarding">Шинэ ажилтны даалгавар</option>
               </select>
             </div>
             <div className="w-[100px]">

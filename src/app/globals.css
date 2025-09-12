@@ -156,5 +156,44 @@ select {
 }
 
 .drop-shadow-glow {
-  filter: drop-shadow(0 4px 20px rgba(147, 51, 234, 0.4));
+  filter: drop-shadow(0 4px 20px rgba(147, 51, 234));
+}
+
+/* Login Button Animations */
+.microsoft-login-btn {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* .microsoft-login-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(147, 51, 234, 0.5),
+    transparent
+  );
+  transition: left 1s ease;
+} */
+
+.microsoft-login-btn:hover::before {
+  left: 100%;
+}
+
+.microsoft-login-btn:hover {
+  border-color: rgba(59, 130, 246, 0.2);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(59, 130, 246, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.microsoft-login-btn:active {
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.1);
 }
