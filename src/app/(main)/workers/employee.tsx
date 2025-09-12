@@ -142,7 +142,7 @@ export default function Employee({ data: initialData }: { data: Employee[] }) {
       setData([...data, newEmployee.data]);
       toast.success("Ажилтан амжилттай нэмэгдлээ");
       setShowForm(false);
-    } catch (error) {
+    } catch {
       toast.error("Ажилтан нэмэхэд алдаа гарлаа");
     } finally {
       setLoading(false);
@@ -172,7 +172,7 @@ export default function Employee({ data: initialData }: { data: Employee[] }) {
 
       toast.success("Ажилтны мэдээлэл шинэчлэгдлээ");
       setEditingEmployee(null);
-    } catch (error) {
+    } catch {
       toast.error("Ажилтны мэдээлэл шинэчлэхэд алдаа гарлаа");
     } finally {
       setLoading(false);
@@ -203,7 +203,7 @@ export default function Employee({ data: initialData }: { data: Employee[] }) {
       );
       toast.success("Ажилтан амжилттай устгагдлаа");
       setDeleteModal({ isOpen: false, employeeId: null });
-    } catch (error) {
+    } catch {
       toast.error("Ажилтныг устгахад алдаа гарлаа");
     } finally {
       setIsDeleting(false);
