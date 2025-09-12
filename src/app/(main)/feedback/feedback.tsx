@@ -13,6 +13,13 @@ interface FeedbackProps {
   question: string;
   unknown: boolean;
   updatedAt: string;
+  userId: {
+    email: string;
+    last_name: string;
+    first_name: string;
+    phone_number: string;
+    _id: string;
+  };
 }
 
 export default function Feedback({
@@ -59,6 +66,9 @@ export default function Feedback({
             <thead>
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                  Хэрэглэгч
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                   Асуулт
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
@@ -80,6 +90,39 @@ export default function Feedback({
                     idx % 2 === 0 && "bg-[#1C1D2F]"
                   } border-b border-transparent hover:border-gray-500`}
                 >
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex flex-col">
+                      <div className="flex items-center space-x-3">
+                        <div className="flex-shrink-0">
+                          <div
+                            className={`h-8 w-8 rounded-full flex items-center justify-center ${
+                              feedback.unknown
+                                ? "bg-gradient-to-r from-gray-500 to-gray-600"
+                                : "bg-gradient-to-r from-purple-500 to-blue-500"
+                            }`}
+                          >
+                            <span className="text-xs font-medium text-white">
+                              {feedback.unknown
+                                ? "?"
+                                : `${feedback.userId.first_name?.[0]}${feedback.userId.last_name?.[0]}`}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="text-sm font-medium text-white">
+                            {feedback.unknown
+                              ? "Нэрээ нууцалсан"
+                              : `${feedback.userId.first_name} ${feedback.userId.last_name}`}
+                          </span>
+                          <span className="text-xs text-gray-400">
+                            {feedback.unknown
+                              ? "Мэдээлэл алга"
+                              : feedback.userId.email}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
                   <td className="px-6 py-4 whitespace-pre-wrap">
                     <div className="flex items-center">
                       <span className="text-sm">{feedback.question}</span>
