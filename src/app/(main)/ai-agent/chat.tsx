@@ -119,9 +119,9 @@ export default function Chat() {
                       className="text-zinc-300"
                       dangerouslySetInnerHTML={{
                         __html: message.content
-                          .replace(/^```html\n?/i, "") // Remove opening ```html
-                          .replace(/\n?```$/i, "") // Remove closing ```
-                          .replace(/^html\n?/i, "") // Remove standalone 'html' at start
+                          .replace(/^```html\n?/i, "")
+                          .replace(/\n?```$/i, "")
+                          .replace(/^html\n?/i, "")
                           .trim(),
                       }}
                     />
