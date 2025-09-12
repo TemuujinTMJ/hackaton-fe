@@ -419,7 +419,7 @@ export default function Tasks({ tasks }: TasksProps) {
           {normalTasks?.length > 0 && (
             <div>
               <h2 className="text-xl font-semibold mb-4 text-white">
-                Энгийн даалгаврууд
+                Туршилтын хугацааны даалгаврууд
               </h2>
               <TaskTable
                 tasks={normalTasks}
