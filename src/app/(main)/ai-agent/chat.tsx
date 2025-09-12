@@ -117,7 +117,13 @@ export default function Chat() {
                   {message.received ? (
                     <div
                       className="text-zinc-300"
-                      dangerouslySetInnerHTML={{ __html: message.content }}
+                      dangerouslySetInnerHTML={{
+                        __html: message.content
+                          .replace(/^```html\n?/i, "") // Remove opening ```html
+                          .replace(/\n?```$/i, "") // Remove closing ```
+                          .replace(/^html\n?/i, "") // Remove standalone 'html' at start
+                          .trim(),
+                      }}
                     />
                   ) : (
                     <div className="text-zinc-300">{message.content}</div>
